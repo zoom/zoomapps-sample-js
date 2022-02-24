@@ -22,13 +22,22 @@ templates=('_SESSION_SECRET' '_MONGOOSE_KEY' '_MONGOOSE_SIGN' '_MONGO_PASSWORD')
 # get a list of environment variables
 env_vars=''
 for i in "${templates[@]}"; do
-  key=$(dword)
-  if [ "$i" = '_MONGOOSE_SIGN' ]; then
+  case "$i" in
+
+  '_MONGOOSE_SIGN')
     key=$(qword)
-  fi
+    ;;
+  '_MONGO_PASSWORD')
+    key=$(openssl rand -base64 32)
+    ;;
+  *)
+    key=$(dword)
+    ;;
+  esac
 
   env_vars="${env_vars} ${i}=${key}"
 done
+
 env_vars=${env_vars:1}
 
 allow_list=$(printf ',$%s' "${templates[@]}")
@@ -37,6 +46,6 @@ allow_list=${allow_list:1}
 # shellcheck disable=SC2086
 new_env=$(env $env_vars envsubst "${allow_list}" <.env)
 
-cat "$new_env" >.env
+echo "$new_env" >.env
 
 exit
