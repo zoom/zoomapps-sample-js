@@ -17,13 +17,13 @@ qword() {
   openssl rand -hex 64
 }
 
-templates=('_SESSION_SECRET' '_MONGOOSE_KEY' '_MONGOOSE_SIGNATURE' '_MONGODB_PASSWORD')
+templates=('_SESSION_SECRET' '_MONGOOSE_KEY' '_MONGOOSE_SIGN' '_MONGO_PASSWORD')
 
 # get a list of environment variables
 env_vars=''
 for i in "${templates[@]}"; do
   key=$(dword)
-  if [ "$i" = '_MONGOOSE_SIGNATURE' ]; then
+  if [ "$i" = '_MONGOOSE_SIGN' ]; then
     key=$(qword)
   fi
 
