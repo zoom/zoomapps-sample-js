@@ -49,6 +49,9 @@ allow_list=${allow_list:1}
 # shellcheck disable=SC2086
 new_env=$(env $env_vars envsubst "${allow_list}" <.env)
 
+# prevent .env changes from being tracked by git
+git update-index --assume-unchanged .env
+
 # send replaced env vars to the .env file
 echo "${new_env}" >.env
 echo "$(basename "$0") - Generated secrets for .env"
