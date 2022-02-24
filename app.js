@@ -21,7 +21,6 @@ dotenv.config();
 const port = process.env.PORT || '3000';
 const deps = [
     'ZM_HOST',
-    'ZM_API',
     'ZM_CLIENT_ID',
     'ZM_CLIENT_SECRET',
     'ZM_REDIRECT_URI',
@@ -29,7 +28,7 @@ const deps = [
     'MONGO_USER',
     'MONGO_PASSWORD',
     'MONGOOSE_KEY',
-    'MONGOOSE_SECRET',
+    'MONGOOSE_SIGN',
 ];
 
 deps.forEach((str) => {
