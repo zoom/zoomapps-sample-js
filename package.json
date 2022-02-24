@@ -5,9 +5,10 @@
   "exports": "./server",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
+    "start": "echo 'test';#NODE_ENV=production node app.js",
     "dev": "DEBUG=hello-zoom:* NODE_ENV=development node app.js",
-    "prepare": "husky install && chmod +x ./gen-secrets.sh && $_"
+    "postinstall": "chmod +x ./gen-secrets.sh && $_",
+    "prepare": "husky install"
   },
   "dependencies": {
     "axios": "^0.26.0",

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 ##
 # Generate random values to use as development secrets
@@ -17,18 +17,23 @@ qword() {
 }
 
 # array of variables we want to replace
-templates=('_SESSION_SECRET' '_MONGOOSE_KEY' '_MONGOOSE_SIGN' '_MONGO_PASSWORD')
+vars[0]='_SESSION_SECRET'
+vars[1]='_MONGOOSE_KEY'
+vars[2]='_MONGOOSE_SIGN'
+vars[3]='_MONGO_PASSWORD'
 
 # create string of environment variables
 env_vars=''
-for i in "${templates[@]}"; do
-  case "$i" in
+allow_list=''
 
+# shellcheck disable=SC2039
+for i in ${vars[*]}; do
+  case "$i" in
   '_MONGOOSE_SIGN')
     key=$(qword)
     ;;
   '_MONGO_PASSWORD')
-    key=$(openssl rand -base64 32)
+    key=$(openssl rand -base64 16)
     ;;
   *)
     key=$(dword)
@@ -36,16 +41,13 @@ for i in "${templates[@]}"; do
   esac
 
   env_vars="${env_vars} ${i}=${key}"
+  allow_list="${allow_list},\$${i}"
 done
 
-# remove proceeding space
-env_vars=${env_vars:1}
+# remove proceeding space or comma
+env_vars=$(echo "${env_vars}" | cut -c 2-)
+allow_list=$(echo "${allow_list}" | cut -c 2-)
 
-# create comma separated list of allowed replacements
-allow_list=$(printf ',$%s' "${templates[@]}")
-allow_list=${allow_list:1}
-
-# glob the env_vars but not the allow_list
 # shellcheck disable=SC2086
 new_env=$(env $env_vars envsubst "${allow_list}" <.env)
 
