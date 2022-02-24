@@ -7,9 +7,7 @@
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "DEBUG=hello-zoom:* NODE_ENV=development node app.js",
-    "lint": "eslint .",
-    "format": "prettier --write '**/*.js'",
-    "prepare": "husky install"
+    "prepare": "husky install && chmod +x ./gen-secrets.sh && $_"
   },
   "dependencies": {
     "axios": "^0.26.0",

@@ -26,6 +26,10 @@ const deps = [
     'ZM_CLIENT_SECRET',
     'ZM_REDIRECT_URI',
     'SESSION_SECRET',
+    'MONGO_USER',
+    'MONGO_PASSWORD',
+    'MONGOOSE_KEY',
+    'MONGOOSE_SECRET',
 ];
 
 deps.forEach((str) => {
