@@ -1,16 +1,16 @@
 import express from 'express';
 import { header } from 'express-validator';
 import { handleError, sanitize } from '../helpers/routing.js';
-import { decryptCtx } from '../helpers/auth.js';
+import { getAppContext, contextHeader } from '../helpers/cipher.js';
 
 const router = express.Router();
 
-const ctxHeader = 'x-zoom-app-context';
-const validateHeader = header(ctxHeader)
-    .isString()
+const validateHeader = header(contextHeader)
     .isBase64()
+    .withMessage(`${contextHeader} header must be a base64 string`)
     .isLength({ min: 128, max: 512 })
-    .withMessage(`${ctxHeader} header is required`);
+    .withMessage(`${contextHeader} header is required`)
+    .escape();
 
 /*
  * Home Page - Zoom App Launch handler
@@ -20,12 +20,10 @@ router.get('/', validateHeader, async (req, res) => {
     try {
         await sanitize(req);
 
-        const ctx = decryptCtx(
-            req.header(ctxHeader),
-            process.env.ZM_CLIENT_SECRET
-        );
+        const header = req.header(contextHeader).toString();
 
-        console.log(ctx);
+        // eslint-disable-next-line no-unused-vars
+        const ctx = getAppContext(header);
 
         res.render('index');
     } catch (e) {

@@ -25,8 +25,15 @@ export function sanitize(req) {
  * @return {Error}
  */
 export function handleError(e) {
-    const status = e.response?.status || e.code;
-    const data = e.response?.data || e.message;
+    let status = e.status || e.code;
+    let data = e.message;
 
-    return createError(status, data);
+    if (e.response) {
+        status = e.response.status;
+        data = e.response.data;
+    } else if (e.request) {
+        data = e.request;
+    }
+
+    return createError(status || 500, data);
 }

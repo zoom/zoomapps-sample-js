@@ -1,55 +1,24 @@
 import axios from 'axios';
-
-const redirectUri = process.env.ZM_REDIRECT_URI;
-const zoom = process.env.ZM_HOST;
-
-function unpack(ctx) {
-    // Decode base64
-    let buf = Buffer.from(ctx, 'base64');
-
-    // Get iv length (1 byte)
-    const ivLength = buf.readUInt8();
-    buf = buf.slice(1);
-
-    // Get iv
-    const iv = buf.slice(0, ivLength);
-    buf = buf.slice(ivLength);
-
-    // Get aad length (2 bytes)
-    const aadLength = buf.readUInt16LE();
-    buf = buf.slice(2);
-
-    // Get aad
-    const aad = buf.slice(0, aadLength);
-    buf = buf.slice(aadLength);
-
-    // Get cipher length (4 bytes)
-    const cipherLength = buf.readInt32LE();
-    buf = buf.slice(4);
-
-    // Get cipherText
-    const cipherText = buf.slice(0, cipherLength);
-
-    // Get tag
-    const tag = buf.slice(cipherLength);
-
-    return {
-        iv,
-        aad,
-        cipherText,
-        tag,
-    };
-}
+import createError from 'http-errors';
 
 /**
- * GetToken obtains an OAuth access token from Zoom
- * @param code - authorization code from user authorization
- * @return {Promise} - promise resolving to the access token object
+ * getToken obtains an OAuth access token from Zoom
+ * @param {String} code - authorization code from user authorization
+ * @param {String} [id=''] - Client ID for the Zoom OAuth App
+ * @param {String} [secret=''] - Client Secret for Zoom OAuth App
+ * @return {Promise}  Promise resolving to the access token object
  */
-export async function GetToken(code) {
+export async function getToken(code, id = '', secret = '') {
+    if (!code || typeof code !== 'string')
+        throw createError(500, 'authorization code must be a valid string');
+
+    const username = id || process.env.ZM_CLIENT_ID;
+    const password = secret || process.env.ZM_CLIENT_SECRET;
+    const zoom = process.env.ZM_HOST;
+
     const data = new URLSearchParams({
         code,
-        redirect_uri: redirectUri,
+        redirect_uri: process.env.ZM_REDIRECT_URI,
         grant_type: 'authorization_code',
     }).toString();
 
@@ -58,40 +27,21 @@ export async function GetToken(code) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            auth: {
+                username,
+                password,
+            },
         })
         .then(({ data }) => Promise.resolve(data));
 }
 
-/**
- * Decrypts the Zoom App Context
- * @see https://marketplace.zoom.us/docs/beta-docs/zoom-apps/zoomappcontext#decrypting-the-header-value
- * @param {String} ctx - Zoom App Context to decryptCtx
- * @param {String} key -
- * @return {JSON} Decrypted Zoom App Context
- */
-export function decrypt(ctx, key) {
-    if (!ctx || typeof ctx !== 'string')
-        throw new Error('ctx must be a string');
+export const zoomAppId = process.env.ZM_CLIENT_ID;
+export const redirectUri = process.env.ZM_REDIRECT_URI;
 
-    if (!key || typeof key !== 'string')
-        throw new Error('key must be a string');
+const auth = {
+    zoomAppId,
+    redirectUri,
+    getToken,
+};
 
-    const { iv, aad, cipherText, tag } = unpack(ctx);
-
-    // Create sha256 hash from key
-    const hash = crypto.createHash('sha256').update(key).digest();
-
-    // AES/GCM decryption
-    const decipher = crypto
-        .createDecipheriv('aes-256-gcm', hash, iv)
-        .setAAD(aad)
-        .setAuthTag(tag)
-        .setAutoPadding(false);
-
-    const update = decipher.update(cipherText, 'hex', 'utf-8');
-    const final = decipher.final('utf-8');
-
-    const decrypted = update + final;
-
-    return JSON.parse(decrypted);
-}
+export default auth;

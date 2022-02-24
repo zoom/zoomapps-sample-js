@@ -1,3 +1,6 @@
+# Redis data folder
+data
+
 # We ignore the .env file through git
 # https://stackoverflow.com/questions/17195861/undo-git-update-index-assume-unchanged-file
 

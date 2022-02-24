@@ -1,0 +1,21 @@
+services:
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+  app:
+    build: ./
+    container_name: zoom-app
+    working_dir: /home/node/app
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/home/node/app
+      - /home/node/app/node_modules
+    depends_on:
+      - redis
