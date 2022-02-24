@@ -5,7 +5,7 @@
   "exports": "./server",
   "private": true,
   "scripts": {
-    "start": "echo 'test';#NODE_ENV=production node app.js",
+    "start": "NODE_ENV=production node app.js",
     "dev": "DEBUG=hello-zoom:* NODE_ENV=development node app.js",
     "postinstall": "chmod +x ./gen-secrets.sh && $_",
     "prepare": "husky install"
