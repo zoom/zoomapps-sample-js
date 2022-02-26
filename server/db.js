@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 import debug from 'debug';
 
-const dbg = debug('hello-zoom:mongdb');
+const dbg = debug('hello-zoom:mongodb');
 
 /**
  * Connect to MongoDB
@@ -12,13 +12,13 @@ async function connect(uri) {
     if (!uri || typeof uri !== 'string')
         throw new Error('mongodb connection string is invalid');
 
+    mongoose.connection.on('connected', () => dbg('Connected'));
+    mongoose.connection.on('error', (err) => dbg('Error', err));
+    mongoose.connection.on('disconnected', () => dbg('Disconnected'));
+
     await mongoose.connect(uri);
 
     mongoose.Promise = global.Promise;
-
-    mongoose.connection.on('connected', () => dbg('connected', uri));
-    mongoose.connection.on('error', (err) => dbg('error', err));
-    mongoose.connection.on('disconnected', () => dbg('disconnected'));
 
     process.on('SIGINT', () =>
         mongoose.connection.close(() =>
@@ -41,7 +41,7 @@ function disconnect() {
  */
 function createStore() {
     if (mongoose.connection.readyState !== 1)
-        throw new Error('cannot create store without mongoose connection');
+        throw new Error('cannot create store without a mongodb connection');
 
     return MongoStore.create({
         client: mongoose.connection.getClient(),

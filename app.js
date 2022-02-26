@@ -27,6 +27,7 @@ const deps = [
     'SESSION_SECRET',
     'MONGO_USER',
     'MONGO_PASSWORD',
+    'MONGO_CONNSTR',
     'MONGOOSE_KEY',
     'MONGOOSE_SIGN',
 ];
@@ -81,7 +82,7 @@ app.use('/auth', authRoutes);
 app.get('*', (req, res) => res.redirect('/'));
 
 // Connect MongoDB, Create Store and Start HTTP Server
-db.connect('mongodb://mongo:27017')
+db.connect(process.env.MONGO_CONNSTR)
     .then(() => {
         const sess = session({
             secret: process.env.SESSION_SECRET,
@@ -90,6 +91,8 @@ db.connect('mongodb://mongo:27017')
             cookie: {
                 path: '/',
                 httpOnly: true,
+                secure: true,
+                sameSite: true,
                 maxAge: 365 * 24 * 60 * 60 * 1000,
             },
             store: db.createStore(),
