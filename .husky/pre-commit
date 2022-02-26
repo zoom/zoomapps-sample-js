@@ -5,9 +5,12 @@ show_ignored() {
   files=$(git ls-files -v | grep '^[[:lower:]]')
 
   if [ -n "${files}" ]; then
-    echo 'The following files are ignored by git:'
+    echo '➜ The following files are ignored by git:'
     echo "${files}"
   fi
+
+  # always return success for husky
+  return 0
 }
 
 npx lint-staged && show_ignored
