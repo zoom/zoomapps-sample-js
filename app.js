@@ -5,50 +5,23 @@ import cookieParser from 'cookie-parser';
 import debug from 'debug';
 import logger from 'morgan';
 import { URL } from 'url';
-import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
 import axios from 'axios';
-
-const env = dotenv.config();
-dotenvExpand.expand(env);
-
 import db from './server/db.js';
 import { startHTTP } from './server/server.js';
 
 import indexRoutes from './server/routes/index.js';
 import authRoutes from './server/routes/auth.js';
 
-/* Environment Config */
-const dbg = debug('hello-zoom:app');
-
-const port = process.env.PORT || '3000';
-const deps = [
-    'ZM_HOST',
-    'ZM_CLIENT_ID',
-    'ZM_CLIENT_SECRET',
-    'ZM_REDIRECT_URI',
-    'SESSION_SECRET',
-    'MONGO_USER',
-    'MONGO_PASSWORD',
-    'MONGO_CONNSTR',
-    'MONGOOSE_KEY',
-    'MONGOOSE_SIGN',
-];
-
-deps.forEach((str) => {
-    const dep = process.env[str];
-    if (!dep || typeof dep !== 'string') {
-        console.error(`${str} is required - check the .env file`);
-        process.exit(1);
-    }
-});
+import { mongoURL, port, sessionSecret } from './config.js';
 
 /* App Config */
+const dbg = debug('hello-zoom:app');
+const dbgAx = debug('hello-zoom:axios');
+
 const app = express();
 app.set('port', port);
 
-// log Axios requests outside of production
-const dbgAx = debug('hello-zoom:axios');
+// log Axios requests and responses
 const logFunc = (r) => {
     if (process.env.NODE_ENV !== 'production') {
         let { method, status, url, config } = r;
@@ -85,10 +58,10 @@ app.use('/auth', authRoutes);
 app.get('*', (req, res) => res.redirect('/'));
 
 // Connect MongoDB, Create Store and Start HTTP Server
-db.connect(process.env.MONGO_CONNSTR)
+db.connect(mongoURL)
     .then(() => {
         const sess = session({
-            secret: process.env.SESSION_SECRET,
+            secret: sessionSecret,
             resave: false,
             saveUninitialized: true,
             cookie: {

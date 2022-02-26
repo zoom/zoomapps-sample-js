@@ -1,6 +1,6 @@
 import axios from 'axios';
 import createError from 'http-errors';
-
+import { zoomApp } from '../../config.js';
 /**
  * getToken obtains an OAuth access token from Zoom
  * @param {String} code - authorization code from user authorization
@@ -12,13 +12,13 @@ export async function getToken(code, id = '', secret = '') {
     if (!code || typeof code !== 'string')
         throw createError(500, 'authorization code must be a valid string');
 
-    const username = id || process.env.ZM_CLIENT_ID;
-    const password = secret || process.env.ZM_CLIENT_SECRET;
-    const zoom = process.env.ZM_HOST;
+    const username = id || zoomApp.clientId;
+    const password = secret || zoomApp.clientSecret;
+    const zoom = zoomApp.host;
 
     const data = new URLSearchParams({
         code,
-        redirect_uri: process.env.ZM_REDIRECT_URI,
+        redirect_uri: zoomApp.redirectUri,
         grant_type: 'authorization_code',
     }).toString();
 
@@ -35,16 +35,4 @@ export async function getToken(code, id = '', secret = '') {
         .then(({ data }) => Promise.resolve(data));
 }
 
-export const zoomAppId = process.env.ZM_CLIENT_ID;
-export const redirectUri = process.env.ZM_REDIRECT_URI;
-
-export const encryptionKey = process.env.MONGOOSE_KEY;
-export const signingKey = process.env.MONGOOSE_SIGN;
-
-const auth = {
-    zoomAppId,
-    redirectUri,
-    getToken,
-};
-
-export default auth;
+export default getToken;

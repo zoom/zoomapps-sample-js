@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { zoomApp } from '../../config.js';
 
 // Get Zoom API URL from Zoom Host value
-const host = new URL(process.env.ZM_HOST);
+const host = new URL(zoomApp.host);
 host.hostname = host.hostname.replace(/^/, 'api.');
 
 const baseURL = `${host.href}/v2`;

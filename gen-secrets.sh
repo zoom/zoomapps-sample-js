@@ -8,19 +8,19 @@ set -eu
 
 # generate a key 32 bits in length
 dword() {
-  openssl rand -hex 32
+  openssl rand -base64 32
 }
 
 # generate a key 64 bits in length
 qword() {
-  openssl rand -hex 64
+  openssl rand -base64 64
 }
 
 # array of variables we want to replace
 vars[0]='_SESSION_SECRET'
-vars[1]='_MONGOOSE_KEY'
-vars[2]='_MONGOOSE_SIGN'
-vars[3]='_MONGO_PASSWORD'
+vars[1]='_MONGO_KEY'
+vars[2]='_MONGO_SIGN'
+vars[3]='_MONGO_PASS'
 
 # create string of environment variables
 env_vars=''
@@ -29,11 +29,11 @@ allow_list=''
 # shellcheck disable=SC2039
 for i in ${vars[*]}; do
   case "$i" in
-  '_MONGOOSE_SIGN')
+  '_MONGO_SIGN')
     key=$(qword)
     ;;
-  '_MONGO_PASSWORD')
-    key=$(openssl rand -base64 32)
+  '_SESSION_SECRET')
+    key=$(openssl rand -hex 32)
     ;;
   *)
     key=$(dword)

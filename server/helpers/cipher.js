@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import { zoomApp } from '../../config.js';
 
 /**
  * Decode and parse a base64 encoded Zoom App Context
@@ -79,7 +80,7 @@ export function getAppContext(header, secret = '') {
     if (!header || typeof header !== 'string')
         throw createError(500, 'context header must be a valid string');
 
-    const key = secret || process.env.ZM_CLIENT_SECRET;
+    const key = secret || zoomApp.clientSecret;
 
     // Decode and parse context
     const { iv, aad, cipherText, tag } = unpack(header);
@@ -92,9 +93,3 @@ export function getAppContext(header, secret = '') {
 }
 
 export const contextHeader = 'x-zoom-app-context';
-
-const cipher = {
-    getAppContext,
-};
-
-export default cipher;
