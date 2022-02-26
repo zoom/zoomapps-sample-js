@@ -38,6 +38,9 @@ export async function getToken(code, id = '', secret = '') {
 export const zoomAppId = process.env.ZM_CLIENT_ID;
 export const redirectUri = process.env.ZM_REDIRECT_URI;
 
+export const encryptionKey = process.env.MONGOOSE_KEY;
+export const signingKey = process.env.MONGOOSE_SIGN;
+
 const auth = {
     zoomAppId,
     redirectUri,

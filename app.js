@@ -6,7 +6,11 @@ import debug from 'debug';
 import logger from 'morgan';
 import { URL } from 'url';
 import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 import axios from 'axios';
+
+const env = dotenv.config();
+dotenvExpand.expand(env);
 
 import db from './server/db.js';
 import { startHTTP } from './server/server.js';
@@ -17,7 +21,6 @@ import authRoutes from './server/routes/auth.js';
 /* Environment Config */
 const dbg = debug('hello-zoom:app');
 
-dotenv.config();
 const port = process.env.PORT || '3000';
 const deps = [
     'ZM_HOST',

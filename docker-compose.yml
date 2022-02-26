@@ -18,7 +18,5 @@ services:
     volumes:
       - ./:/home/node/app
       - /home/node/app/node_modules
-    environment:
-      - MONGO_CONNSTR=mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongodb:27017
     depends_on:
       - mongodb

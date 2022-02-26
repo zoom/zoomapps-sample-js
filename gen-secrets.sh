@@ -33,7 +33,7 @@ for i in ${vars[*]}; do
     key=$(qword)
     ;;
   '_MONGO_PASSWORD')
-    key=$(openssl rand -base64 16)
+    key=$(openssl rand -base64 32)
     ;;
   *)
     key=$(dword)

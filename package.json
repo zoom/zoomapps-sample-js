@@ -7,8 +7,9 @@
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "DEBUG=hello-zoom:* NODE_ENV=development node app.js",
-    "prepare": "chmod +x ./gen-secrets.sh && $_",
-    "postprepare": "husky install"
+    "prepare": "husky install",
+    "compose": "docker compose up",
+    "precompose": "chmod +x ./gen-secrets.sh && $_"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -17,6 +18,7 @@
     "cookie-parser": "~1.4.6",
     "debug": "~4.3.3",
     "dotenv": "^16.0.0",
+    "dotenv-expand": "^8.0.1",
     "express": "~4.17.3",
     "express-session": "^1.17.2",
     "express-validator": "^6.14.0",
