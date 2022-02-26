@@ -1,4 +1,13 @@
 #!/usr/bin/env sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged
+show_ignored() {
+  files=$(git ls-files -v | grep '^[[:lower:]]')
+
+  if [ -n "${files}" ]; then
+    echo 'The following files are ignored by git:'
+    echo "${files}"
+  fi
+}
+
+npx lint-staged && show_ignored
