@@ -17,6 +17,6 @@ services:
       - "${PORT}:${PORT}"
     volumes:
       - ./:/home/node/app
-      - /home/node/app/node_modules
+      - /home/node/app/node_moduless
     depends_on:
       - mongodb

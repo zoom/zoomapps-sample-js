@@ -13,4 +13,5 @@ show_ignored() {
   return 0
 }
 
-npx lint-staged && show_ignored
+# shellcheck disable=SC2015
+npx lint-staged && (show_ignored || true)

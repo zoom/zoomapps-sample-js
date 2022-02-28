@@ -13,7 +13,7 @@ dword() {
 
 # generate a key 64 bits in length
 qword() {
-  openssl rand -base64 64
+  openssl rand -base64 64 | tr -d '\n'
 }
 
 # array of variables we want to replace
