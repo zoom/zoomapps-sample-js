@@ -12,7 +12,7 @@ export async function startHTTP(app, port) {
     // Create HTTP server
     const server = http.createServer(app);
 
-    // let the user know we're serving
+    // let the user know when we're serving
     server.on('listening', () => {
         const addr = server.address();
         const bind =
@@ -30,15 +30,9 @@ export async function startHTTP(app, port) {
         // handle specific listen errors with friendly messages
         switch (error?.code) {
             case 'EACCES':
-                /* eslint-disable-next-line no-console */
-                console.error(`${bind} requires elevated privileges`);
-                process.exit(1);
-                break;
+                throw new Error(`${bind} requires elevated privileges`);
             case 'EADDRINUSE':
-                /* eslint-disable-next-line no-console */
-                console.error(`${bind} is already in use`);
-                process.exit(1);
-                break;
+                throw new Error(`${bind} is already in use`);
             default:
                 throw error;
         }

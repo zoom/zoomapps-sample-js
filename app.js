@@ -6,6 +6,7 @@ import debug from 'debug';
 import logger from 'morgan';
 import { URL } from 'url';
 import axios from 'axios';
+import helmet from 'helmet';
 import db from './server/db.js';
 import { startHTTP } from './server/server.js';
 
@@ -15,8 +16,7 @@ import authRoutes from './server/routes/auth.js';
 import { mongoURL, port, sessionSecret } from './config.js';
 
 /* App Config */
-const dbg = debug('hello-zoom:app');
-const dbgAx = debug('hello-zoom:axios');
+const dbg = debug(`hello-zoom:ap`);
 
 const app = express();
 app.set('port', port);
@@ -33,7 +33,7 @@ const logFunc = (r) => {
         if (method) str = `${method.toUpperCase()} ${str}`;
         if (status) str = `${status} ${str}`;
 
-        dbgAx(str);
+        debug(`hello-zoom:axios`)(str);
     }
 
     return r;
@@ -49,6 +49,29 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev', { stream: { write: (msg) => dbg(msg) } }));
 app.use(express.static(new URL('public', import.meta.url).pathname));
+
+app.use(
+    helmet({
+        frameguard: {
+            action: 'sameorigin',
+        },
+        hsts: {
+            maxAge: 31536000,
+        },
+        referrerPolicy: 'sameorigin',
+        contentSecurityPolicy: {
+            directives: {
+                'default-src': '*',
+                'style-src': 'self',
+                'script-src': 'self',
+                'connect-src': 'self',
+                'img-src': 'self',
+                'base-uri': 'self',
+                'form-action': 'self',
+            },
+        },
+    })
+);
 
 /* Routing */
 app.use('/', indexRoutes);
@@ -78,8 +101,9 @@ db.connect(mongoURL)
 
         return startHTTP(app, port);
     })
-    .catch((e) => {
+    .catch(async (e) => {
         console.error(e);
+        await db.disconnect();
         process.exit(1);
     });
 

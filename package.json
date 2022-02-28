@@ -7,9 +7,10 @@
   "scripts": {
     "start": "NODE_ENV=production node app.js",
     "dev": "DEBUG=hello-zoom:* NODE_ENV=development node app.js",
+    "preprepare": "[ -d .git ] && [ -f .env ] && git update-index --assume-unchanged .env || true",
     "prepare": "husky install",
-    "compose": "docker compose up",
-    "precompose": "chmod +x ./gen-secrets.sh && $_"
+    "precompose": "chmod +x ./gen-secrets.sh && $_",
+    "compose": "docker compose up"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -22,6 +23,7 @@
     "express": "~4.17.3",
     "express-session": "^1.17.2",
     "express-validator": "^6.14.0",
+    "helmet": "^5.0.2",
     "http-errors": "^2.0.0",
     "https-localhost": "^4.7.1",
     "mongoose": "^6.2.3",

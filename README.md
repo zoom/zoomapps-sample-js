@@ -2,16 +2,17 @@
 
 Use of this sample app is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
-Zoom Apps allow you to embed your application directly within the Zoom Client. This allows you to bring your apps to the
-meetings your users are in.
-
-Use this codebase to make something awesome!
+Zoom Apps let you embed your application directly in the Zoom Client. Use this template to make something awesome!
 
 ## Prerequisites
 
-1. [Docker](https://docker.io/)
-2. Zoom [Pro Plan or higher](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-3. [Zoom App]() OAuth Credentials (Client ID, Secret and Redirect URI)
+1. [Node JS](https://nodejs.org/en/)
+2. [Docker](https://docker.io/)
+3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
+4. [Zoom App]() OAuth Credentials
+    1. Client ID
+    2. Client Secret
+    3. Redirect URI
 
 You can follow [this guide]() to create a Zoom App with the [Zoom Marketplace](https://marketplace.zoom.us/).
 
@@ -31,8 +32,8 @@ cd hello-zoom-apps
 
 ## Setup
 
-To start, fill out the [.env](.env) file with your Client ID, Secret and Redirect URI. No other fields need to be
-updated and many will be generated in the next section.
+To start, fill out the [.env](.env) file with your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom
+App. No other fields need to be updated for development and many will be generated in the next section.
 
 ```dotenv
 ZM_CLIENT_ID=...
@@ -47,19 +48,48 @@ Zoom.
 
 ## Start the App
 
-Run the `compose` npm script to start the app in development mode. This will generate random secrets for testing and
-start the application in a Docker container.
+### Development
+
+Run the `compose` npm script to start the app in development mode.
 
 ```shell
 npm run compose
 ```
 
-#### Production
+The `compose` npm script will:
 
-To start the app in production mode, you can use the `start` npm script.
+1. Generate random secrets for development
+2. Start MongoDB in a container
+3. Start the Zoom App in a container
 
-This requires that you have an instance of MongoDB running locally and that you have adjusted the `MONGO_URL` connection
-string found in the [.env](.env) to match the location of your server.
+### Production
+
+#### Without Docker
+
+Building without Docker requires that you have an instance of MongoDB running natively, you've populated the .env with
+secrets and you have adjusted the MongoDB credentials.
+
+The first step, as usual, is to enter your **Client ID**, **Client Secret** and **Redirect URI** for your Zoom App in
+the [.env](.env) file. The following steps are unique to building without Docker:
+
+##### Add your DB and Session Secrets
+
+Run `gen-secrets.sh` to generate development secrets or manually enter your own secrets for production.
+
+##### Change the MongoDB Connection String
+
+Change `MONGO_USER` and `MONGO_PASS` to match the user of your database. Then, adjust the format of `MONGO_URL` to match
+the connection string of your server.
+
+##### Start the App
+
+###### Development
+
+```shell
+npm run dev
+```
+
+###### Production
 
 ```shell
 npm start
@@ -68,7 +98,8 @@ npm start
 ## Serve over HTTPS
 
 In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your app is
-publicly accessible. Often the easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com):
+publicly accessible. Often the easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the
+port you're serving on:
 
 ```shell
 ngrok http 3000
@@ -76,18 +107,20 @@ ngrok http 3000
 
 ## Usage
 
-Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
+1. Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
+    1. Home Page: `{{ Ngrok URL }}/`
+    2. Redirect URL: `{{ Ngrok URL }}/auth`
 
-- Home Page: /
-- Redirect URL: /auth
+**Example:** `https://foobar.ngrok.com:1234/auth`
 
-example: https://blahblah.ngrok.com:1234/auth
-
-Click Install from the Activation tab to open the app in your Zoom Client.
+2. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us)
+3. Click **Install** from the Activation tab to install and open the app in your Zoom Client.
 
 ## Deployment
 
-You can deploy this app on any service that allows you to host dynamic Node.js apps:
+You can deploy this app on any service that allows you to host dynamic Node.js apps. If you're using Docker,
+use `docker build` to build for production and deploy to a server that has MongoDB configured natively or in another
+container (similar to [docker-compose.yml]())
 
 1. [Heroku](https://devcenter.heroku.com/articles/deploying-nodejs)
 2. [Google Cloud](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/nodejs)
@@ -95,19 +128,35 @@ You can deploy this app on any service that allows you to host dynamic Node.js a
 
 ## Contribution
 
-Please send pull requests and issues to this project for any issues or suggestions that you have!
+Please send pull requests and issues to this project for any problems or suggestions that you have!
+
+### Keeping secrets secret
+
+The application will use loaded data instead of pure environment variables. This adds an extra layer of protection for
+secrets while developing. In a production environment, you should use a Secret Manager from your hosting platform
+instead.
+
+The [.env](.env) file should never be part of a commit or merge request and is automatically ignored by git after
+running one of the following:
+
+1. `npm install`
+2. `npm run prepare`
+3. `npm run compose`
+4. `gen-secrets.sh`
 
 ### Code Style
 
 This project uses prettier and eslint to enforce style and protect against coding errors along with a pre-commit git
-hook to ensure files pass linting prior to commit.
+hook ([husky](https://typicode.github.io/husky/#/)) to ensure files pass checks prior to commit.
 
 ### Testing
 
-At this time there are no e2e or unit tests
+At this time there are no e2e or unit tests.
 
 ## Need help?
 
 If you're looking for help, try [Developer Support](https://devsupport.zoom.us) or
 our [Developer Forum](https://devforum.zoom.us). Priority support is also available
 with [Premier Developer Support](https://zoom.us/docs/en-us/developer-support-plans.html) plans.
+
+

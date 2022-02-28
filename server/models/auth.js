@@ -4,19 +4,21 @@ import { encryptionKey, signingKey } from '../../config.js';
 
 const { Schema } = mongoose;
 
+const options = {
+    unique: true,
+    required: true,
+    dropDups: true,
+};
+
 export const authSchema = new Schema(
     {
         accessToken: {
             type: String,
-            unique: true,
-            required: true,
-            dropDups: true,
+            ...options,
         },
         refreshToken: {
             type: String,
-            unique: true,
-            required: true,
-            dropDups: true,
+            ...options,
         },
         expiresAt: { type: String, required: true },
         scope: String,

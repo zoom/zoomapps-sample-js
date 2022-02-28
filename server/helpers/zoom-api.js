@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { zoomApp } from '../../config.js';
+import createError from 'http-errors';
 
 // Get Zoom API URL from Zoom Host value
 const host = new URL(zoomApp.host);
@@ -7,10 +8,47 @@ host.hostname = host.hostname.replace(/^/, 'api.');
 
 const baseURL = `${host.href}/v2`;
 
-function getHeaders(token) {
-    return {
-        Authorization: `Bearer ${token}`,
-    };
+/**
+ * Get the authorization header for the Zoom API
+ * @param token
+ * @return {String} Zoom API authorization header
+ */
+export function getAuthHeader(token) {
+    return `Bearer ${token}`;
+}
+
+/**
+ * getToken obtains an OAuth access token from Zoom
+ * @param {String} code - authorization code from user authorization
+ * @param {String} [id=''] - Client ID for the Zoom OAuth App
+ * @param {String} [secret=''] - Client Secret for Zoom OAuth App
+ * @return {Promise}  Promise resolving to the access token object
+ */
+export async function getToken(code, id = '', secret = '') {
+    if (!code || typeof code !== 'string')
+        throw createError(500, 'authorization code must be a valid string');
+
+    const username = id || zoomApp.clientId;
+    const password = secret || zoomApp.clientSecret;
+
+    const data = new URLSearchParams({
+        code,
+        redirect_uri: zoomApp.redirectUri,
+        grant_type: 'authorization_code',
+    }).toString();
+
+    return axios({
+        data,
+        baseURL,
+        url: '/oauth/token',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        auth: {
+            username,
+            password,
+        },
+    }).then(({ data }) => Promise.resolve(data));
 }
 
 /**
@@ -22,7 +60,9 @@ export function getZoomUser(uid, token) {
     return axios({
         baseURL,
         url: `/users/${uid}`,
-        headers: getHeaders(token),
+        headers: {
+            Authorization: getAuthHeader(token),
+        },
     }).then(({ data }) => Promise.resolve(data));
 }
 
@@ -34,8 +74,11 @@ export function getZoomUser(uid, token) {
 export function getDeepLink(token) {
     return axios({
         baseURL,
+        url: '/zoomapp/deeplink',
         method: 'POST',
-        headers: getHeaders(token),
+        headers: {
+            Authorization: getAuthHeader(token),
+        },
         data: {
             action: JSON.stringify({
                 url: '/',
@@ -44,5 +87,5 @@ export function getDeepLink(token) {
                 role_id: 0,
             }),
         },
-    }).then(({ data }) => Promise.resolve(data.deepLink));
+    }).then(({ data }) => Promise.resolve(data?.deepLink));
 }

@@ -2,28 +2,31 @@ import express from 'express';
 import { query } from 'express-validator';
 
 import { handleError, sanitize } from '../helpers/routing.js';
-import { getToken } from '../helpers/auth.js';
-import { getDeepLink, getZoomUser } from '../helpers/zoom-api.js';
+import { getToken, getDeepLink, getZoomUser } from '../helpers/zoom-api.js';
 
 import Auth from '../models/auth.js';
 import User from '../models/user.js';
 
 const router = express.Router();
 
+const codeMin = 32;
+const codeMax = 64;
+const stateMax = 1024;
+
 // Validate the Authorization Code sent from Zoom
 const validateQuery = [
     query('code')
         .isString()
         .withMessage('code must be a string')
-        .isLength({ min: 32, max: 64 })
-        .withMessage('code must be > 32 and < 64 chars')
+        .isLength({ min: codeMin, max: codeMax })
+        .withMessage(`code must be > ${codeMin} and < ${codeMax} chars`)
         .escape(),
     query('state')
         .optional()
         .isString()
         .withMessage('state must be a string')
-        .isLength({ max: 1024 })
-        .withMessage('state must be < 1024 chars')
+        .isLength({ max: stateMax })
+        .withMessage(`state must be < ${stateMax} chars`)
         .escape(),
 ];
 
@@ -61,6 +64,7 @@ router.get('/', validateQuery, async (req, res, next) => {
         // fetch deeplink from Zoom API
         const deepLink = await getDeepLink(accessToken);
 
+        // redirect the user to the Zoom Client
         res.redirect(deepLink);
     } catch (e) {
         next(handleError(e));

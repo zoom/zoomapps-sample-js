@@ -29,7 +29,7 @@ async function connect(uri) {
 
 /**
  * Disconnect from MongoDB
- * @return {Promise<void>}
+ * @return {Promise}
  */
 function disconnect() {
     return mongoose.disconnect();

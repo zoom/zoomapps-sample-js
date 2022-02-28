@@ -14,7 +14,7 @@ services:
     container_name: "zoom-app"
     working_dir: /home/node/app
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     volumes:
       - ./:/home/node/app
       - /home/node/app/node_modules
