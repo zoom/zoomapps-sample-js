@@ -50,13 +50,13 @@ Zoom.
 
 ### Development
 
-Run the `compose` npm script to start the app in development mode.
+Run the `dev` npm script to start in development mode using a Docker container.
 
 ```shell
-npm run compose
+npm run dev
 ```
 
-The `compose` npm script will:
+The `dev` npm script will:
 
 1. Generate random secrets for development
 2. Start MongoDB in a container
@@ -64,10 +64,23 @@ The `compose` npm script will:
 
 ### Production
 
+You can use the `build` script to output a production docker image of your Zoom App. Make sure that you have configured
+production keys and secrets in your .env file or through the Secrets Manager of your cloud platform.
+
+```shell
+npm run build
+```
+
+To start the app run the container that was built:
+
+```shell
+docker run -p 80:80 zoom-app
+````
+
 #### Without Docker
 
 Building without Docker requires that you have an instance of MongoDB running natively, you've populated the .env with
-secrets and you have adjusted the MongoDB credentials.
+secrets, and you have adjusted the MongoDB credentials.
 
 The first step, as usual, is to enter your **Client ID**, **Client Secret** and **Redirect URI** for your Zoom App in
 the [.env](.env) file. The following steps are unique to building without Docker:
@@ -83,16 +96,19 @@ the connection string of your server.
 
 ##### Start the App
 
+You can use NODE_ENV to set the environment when starting the app locally. Take a look at [package.json](package.json)
+for best practices.
+
 ###### Development
 
 ```shell
-npm run dev
+npm start
 ```
 
 ###### Production
 
 ```shell
-npm start
+NODE_ENV=production npm start
 ```
 
 ## Serve over HTTPS
@@ -141,7 +157,7 @@ running one of the following:
 
 1. `npm install`
 2. `npm run prepare`
-3. `npm run compose`
+3. `npm run dev`
 4. `gen-secrets.sh`
 
 ### Code Style

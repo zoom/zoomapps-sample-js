@@ -5,12 +5,13 @@
   "exports": "./server",
   "private": true,
   "scripts": {
-    "start": "NODE_ENV=production node app.js",
-    "dev": "DEBUG=hello-zoom:* NODE_ENV=development node app.js",
+    "start": "node app.js",
+    "dev": "docker compose up",
+    "predev": "chmod +x ./gen-secrets.sh && $_",
+    "build": "docker build --build-arg NODE_ENV=production -t zoom-app .",
+    "prepare": "npx husky install",
     "preprepare": "[ -d .git ] && [ -f .env ] && git update-index --assume-unchanged .env || true",
-    "prepare": "husky install",
-    "precompose": "chmod +x ./gen-secrets.sh && $_",
-    "compose": "docker compose up"
+    "clean": "docker compose down -v --remove-orphans --rmi local"
   },
   "dependencies": {
     "axios": "^0.26.0",
