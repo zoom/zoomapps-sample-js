@@ -30,6 +30,13 @@ Once cloned navigate to the `hello-zoom-app` directory:
 cd hello-zoom-apps
 ```
 
+Then install dependencies. Docker will do this within the container, but it's useful to have local packages for
+development and for your IDE.
+
+```shell
+npm install
+```
+
 ## Setup
 
 To start, fill out the [.env](.env) file with your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom
@@ -77,40 +84,6 @@ To start the app run the container that was built:
 docker run -p 80:80 zoom-app
 ````
 
-#### Without Docker
-
-Building without Docker requires that you have an instance of MongoDB running natively, you've populated the .env with
-secrets, and you have adjusted the MongoDB credentials.
-
-The first step, as usual, is to enter your **Client ID**, **Client Secret** and **Redirect URI** for your Zoom App in
-the [.env](.env) file. The following steps are unique to building without Docker:
-
-##### Add your DB and Session Secrets
-
-Run `gen-secrets.sh` to generate development secrets or manually enter your own secrets for production.
-
-##### Change the MongoDB Connection String
-
-Change `MONGO_USER` and `MONGO_PASS` to match the user of your database. Then, adjust the format of `MONGO_URL` to match
-the connection string of your server.
-
-##### Start the App
-
-You can use NODE_ENV to set the environment when starting the app locally. Take a look at [package.json](package.json)
-for best practices.
-
-###### Development
-
-```shell
-npm start
-```
-
-###### Production
-
-```shell
-NODE_ENV=production npm start
-```
-
 ## Serve over HTTPS
 
 In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your app is
@@ -142,15 +115,58 @@ container (similar to [docker-compose.yml]())
 2. [Google Cloud](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/nodejs)
 3. [AWS](https://aws.amazon.com/getting-started/hands-on/deploy-nodejs-web-app/)
 
+## Without Docker
+
+Building without Docker requires that you have an instance of MongoDB running natively, you've populated the .env with
+secrets, and you have adjusted the MongoDB credentials.
+
+The first step, as usual, is to enter your **Client ID**, **Client Secret** and **Redirect URI** for your Zoom App in
+the [.env](.env) file. The following steps are unique to building without Docker:
+
+##### Add your DB and Session Secrets
+
+Run `gen-secrets.sh` to generate development secrets or manually enter your own secrets for production.
+
+##### Change the MongoDB Connection String
+
+Change `MONGO_USER` and `MONGO_PASS` to match the user of your database. Then, adjust the format of `MONGO_URL` to match
+the connection string of your server.
+
+##### Install Dependencies
+
+Make sure you install dependencies when building locally
+
+```shell
+npm install
+```
+
+##### Start the App
+
+You can use NODE_ENV to set the environment when starting the app locally. Take a look at [package.json](package.json)
+for best practices.
+
+###### Development
+
+```shell
+npm start
+```
+
+###### Production
+
+```shell
+NODE_ENV=production npm start
+```
+
 ## Contribution
 
-Please send pull requests and issues to this project for any problems or suggestions that you have!
+Please send pull requests and issues to this project for any problems or suggestions that you have! Make sure that you
+install packages locally to pass pre-commit git hooks.
 
 ### Keeping secrets secret
 
 The application will use loaded data instead of pure environment variables. This adds an extra layer of protection for
-secrets while developing. In a production environment, you should use a Secret Manager from your hosting platform
-instead.
+secrets while developing locally. In a production environment, you should use a Secret Manager from your hosting
+platform instead.
 
 The [.env](.env) file should never be part of a commit or merge request and is automatically ignored by git after
 running one of the following:

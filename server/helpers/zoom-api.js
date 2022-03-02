@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { URL } from 'url';
 import { zoomApp } from '../../config.js';
 import createError from 'http-errors';
 
@@ -6,7 +7,7 @@ import createError from 'http-errors';
 const host = new URL(zoomApp.host);
 host.hostname = host.hostname.replace(/^/, 'api.');
 
-const baseURL = `${host.href}/v2`;
+const baseURL = host.href;
 
 /**
  * Get the authorization header for the Zoom API
@@ -39,8 +40,9 @@ export async function getToken(code, id = '', secret = '') {
 
     return axios({
         data,
-        baseURL,
+        baseURL: zoomApp.host,
         url: '/oauth/token',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
@@ -59,7 +61,7 @@ export async function getToken(code, id = '', secret = '') {
 export function getZoomUser(uid, token) {
     return axios({
         baseURL,
-        url: `/users/${uid}`,
+        url: `/v2/users/${uid}`,
         headers: {
             Authorization: getAuthHeader(token),
         },
@@ -74,7 +76,7 @@ export function getZoomUser(uid, token) {
 export function getDeepLink(token) {
     return axios({
         baseURL,
-        url: '/zoomapp/deeplink',
+        url: '/v2/zoomapp/deeplink',
         method: 'POST',
         headers: {
             Authorization: getAuthHeader(token),
@@ -87,5 +89,5 @@ export function getDeepLink(token) {
                 role_id: 0,
             }),
         },
-    }).then(({ data }) => Promise.resolve(data?.deepLink));
+    }).then(({ data }) => Promise.resolve(data.deeplink));
 }

@@ -2,7 +2,7 @@ import express from 'express';
 import { query } from 'express-validator';
 
 import { handleError, sanitize } from '../helpers/routing.js';
-import { getToken, getDeepLink, getZoomUser } from '../helpers/zoom-api.js';
+import { getDeepLink, getToken, getZoomUser } from '../helpers/zoom-api.js';
 
 import Auth from '../models/auth.js';
 import User from '../models/user.js';
@@ -48,7 +48,7 @@ router.get('/', validateQuery, async (req, res, next) => {
         } = await getToken(req.query.code);
 
         // create a new Auth object for this user
-        const auth = Auth.create({
+        const auth = await Auth.create({
             scope,
             accessToken,
             refreshToken,
@@ -62,10 +62,10 @@ router.get('/', validateQuery, async (req, res, next) => {
         await User.updateOne({ id }, { id, auth }, { upsert: true });
 
         // fetch deeplink from Zoom API
-        const deepLink = await getDeepLink(accessToken);
+        const deeplink = await getDeepLink(accessToken);
 
         // redirect the user to the Zoom Client
-        res.redirect(deepLink);
+        res.redirect(deeplink);
     } catch (e) {
         next(handleError(e));
     }

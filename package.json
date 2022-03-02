@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "dev": "docker compose up",
+    "dev": "docker compose up zoom-app",
     "predev": "chmod +x ./gen-secrets.sh && $_",
     "build": "docker build --build-arg NODE_ENV=production -t zoom-app .",
     "prepare": "npx husky install",

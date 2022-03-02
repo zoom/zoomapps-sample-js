@@ -16,7 +16,7 @@ import authRoutes from './server/routes/auth.js';
 import { mongoURL, port, sessionSecret } from './config.js';
 
 /* App Config */
-const dbg = debug(`hello-zoom:ap`);
+const dbg = debug(`hello-zoom:app`);
 
 const app = express();
 app.set('port', port);
@@ -24,9 +24,9 @@ app.set('port', port);
 // log Axios requests and responses
 const logFunc = (r) => {
     if (process.env.NODE_ENV !== 'production') {
-        let { method, status, url, config } = r;
+        let { method, status, url, baseURL, config } = r;
 
-        url = url || config?.url;
+        url = new URL(url || config?.url, baseURL || config?.baseURL);
 
         let str = url;
 
