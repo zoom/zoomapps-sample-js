@@ -11,11 +11,6 @@ dword() {
   openssl rand -base64 32
 }
 
-# generate a key 64 bits in length
-qword() {
-  openssl rand -base64 64 | tr -d '\n|/'
-}
-
 # array of variables we want to replace
 vars[0]='_SESSION_SECRET'
 vars[1]='_MONGO_KEY'
@@ -30,7 +25,10 @@ allow_list=''
 for i in ${vars[*]}; do
   case "$i" in
   '_MONGO_SIGN')
-    key=$(qword)
+    key=$(openssl rand -base64 64 | tr -d '\n')
+    ;;
+  '_MONGO_PASS')
+    key=$(dword | tr -d '/')
     ;;
   '_SESSION_SECRET')
     key=$(openssl rand -hex 32)
