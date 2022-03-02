@@ -18,6 +18,14 @@ export function getAuthHeader(token) {
     return `Bearer ${token}`;
 }
 
+export function getInstallURL() {
+    return new URLSearchParams({
+        client_id: zoomApp.clientId,
+        redirect_uri: zoomApp.redirectUri,
+        response_type: 'code',
+    }).toString();
+}
+
 /**
  * getToken obtains an OAuth access token from Zoom
  * @param {String} code - authorization code from user authorization
@@ -73,7 +81,7 @@ export function getZoomUser(uid, token) {
  * @param {string} token - Zoom App Access Token
  * @return {Promise}
  */
-export function getDeepLink(token) {
+export function getDeeplink(token) {
     return axios({
         baseURL,
         url: '/v2/zoomapp/deeplink',

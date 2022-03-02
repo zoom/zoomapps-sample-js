@@ -2,6 +2,7 @@ import express from 'express';
 import { header } from 'express-validator';
 import { handleError, sanitize } from '../helpers/routing.js';
 import { contextHeader, getAppContext } from '../helpers/cipher.js';
+import { getInstallURL } from '../helpers/zoom-api.js';
 
 const router = express.Router();
 
@@ -27,6 +28,12 @@ router.get('/', validateHeader, async (req, res) => {
 
         const header = req.header(contextHeader);
 
+        if (!header) {
+            const e = new Error(`Header ${contextHeader} is missing`);
+            e.code = 400;
+            return handleError(e);
+        }
+
         // eslint-disable-next-line no-unused-vars
         const ctx = getAppContext(header);
 
@@ -35,5 +42,13 @@ router.get('/', validateHeader, async (req, res) => {
         handleError(e);
     }
 });
+
+/*
+ * Install Route - Install the Zoom App from the Zoom Marketplace
+ * this route is used when a user installs the app from the Zoom Client
+ */
+router.get('/install', validateHeader, async (req, res) =>
+    res.redirect(getInstallURL())
+);
 
 export default router;
