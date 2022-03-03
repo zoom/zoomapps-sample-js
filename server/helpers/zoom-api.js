@@ -19,11 +19,11 @@ export function getAuthHeader(token) {
 }
 
 export function getInstallURL() {
-    return new URLSearchParams({
-        client_id: zoomApp.clientId,
-        redirect_uri: zoomApp.redirectUri,
-        response_type: 'code',
-    }).toString();
+    const url = new URL('/oauth/authorize', zoomApp.host);
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('client_id', zoomApp.clientId);
+    url.searchParams.set('redirect_uri', zoomApp.redirectUri);
+    return url.href;
 }
 
 /**

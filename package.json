@@ -29,7 +29,8 @@
     "https-localhost": "^4.7.1",
     "mongoose": "^6.2.3",
     "mongoose-encryption": "^2.1.2",
-    "morgan": "~1.10.0"
+    "morgan": "~1.10.0",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "eslint": "^8.9.0",

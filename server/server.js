@@ -1,7 +1,7 @@
 import http from 'http';
 import debug from 'debug';
 
-const dbg = debug('hello-zoom:server');
+const dbg = debug('hello-zoom:http');
 
 /**
  * Start the HTTP server

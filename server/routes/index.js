@@ -3,49 +3,49 @@ import { header } from 'express-validator';
 import { handleError, sanitize } from '../helpers/routing.js';
 import { contextHeader, getAppContext } from '../helpers/cipher.js';
 import { getInstallURL } from '../helpers/zoom-api.js';
-import debug from 'debug';
 
 const router = express.Router();
 
-const headerMin = 128;
 const headerMax = 512;
 
 const validateHeader = header(contextHeader)
-    .isBase64()
+    .isString()
     .withMessage(`${contextHeader} header must be a base64 string`)
-    .isLength({ min: headerMin, max: headerMax })
-    .withMessage(
-        `${contextHeader} header must be > ${headerMin} and < ${headerMax} chars`
-    )
+    .isLength({ max: headerMax })
+    .withMessage(`${contextHeader} header must be < ${headerMax} chars`)
+    .optional()
     .escape();
 
 /*
  * Home Page - Zoom App Launch handler
  * this route is used when a user navigates to the deep link
  */
-router.get('/', validateHeader, async (req, res) => {
+router.get('/', validateHeader, async (req, res, next) => {
     try {
         await sanitize(req);
 
         const header = req.header(contextHeader);
 
-        debug('router')('header', header);
+        let name = 'Browser';
+        let isZoom = false;
 
-        if (!header) {
-            const e = new Error(`Header ${contextHeader} is missing`);
-            e.code = 400;
-            return handleError(e);
+        if (header) {
+            const ctx = getAppContext(header);
+
+            req.session.user = ctx.uid;
+            req.session.meetingUUID = ctx.mid;
+
+            isZoom = true;
+            name = 'Zoom';
         }
 
-        // eslint-disable-next-line no-unused-vars
-        const ctx = getAppContext(header);
-
-        req.session.user = ctx?.uid;
-        req.session.meetingUUID = ctx?.mid;
-
-        res.sendFile('index.html');
+        return res.render('index', {
+            isZoom,
+            title: `Hello ${name}`,
+            installURL: getInstallURL(),
+        });
     } catch (e) {
-        handleError(e);
+        next(handleError(e));
     }
 });
 

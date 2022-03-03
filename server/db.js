@@ -12,19 +12,21 @@ async function connect(uri) {
     if (!uri || typeof uri !== 'string')
         throw new Error('mongodb connection string is invalid');
 
+    mongoose.connection.on('connecting', () => dbg('Connecting...'));
     mongoose.connection.on('connected', () => dbg('Connected'));
     mongoose.connection.on('error', (err) => dbg('Error', err));
+    mongoose.connection.on('disconnecting', () => dbg('Disconnecting...'));
     mongoose.connection.on('disconnected', () => dbg('Disconnected'));
 
     await mongoose.connect(uri);
 
     mongoose.Promise = global.Promise;
 
-    process.on('SIGINT', () =>
-        mongoose.connection.close(() =>
-            dbg('SIGINT caught - closing connection')
-        )
-    );
+    process.on('SIGINT', () => {
+        dbg('SIGINT caught => closing connection');
+
+        mongoose.connection.close(() => dbg('connection closed'));
+    });
 }
 
 /**

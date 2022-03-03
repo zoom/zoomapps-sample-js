@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import fs from 'fs';
-import * as dotenvExpand from 'dotenv-expand';
+import dotenvExpand from 'dotenv-expand';
 
 // Read .env directly to avoid adding secrets to the environment
 const fileName = '.env';
