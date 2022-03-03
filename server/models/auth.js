@@ -34,6 +34,4 @@ authSchema.plugin(encrypt, {
     decryptPostSave: false,
 });
 
-const Auth = mongoose.model('Auth', authSchema);
-
-export default Auth;
+export default mongoose.model('Auth', authSchema);

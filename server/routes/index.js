@@ -3,6 +3,7 @@ import { header } from 'express-validator';
 import { handleError, sanitize } from '../helpers/routing.js';
 import { contextHeader, getAppContext } from '../helpers/cipher.js';
 import { getInstallURL } from '../helpers/zoom-api.js';
+import debug from 'debug';
 
 const router = express.Router();
 
@@ -28,6 +29,8 @@ router.get('/', validateHeader, async (req, res) => {
 
         const header = req.header(contextHeader);
 
+        debug('router')('header', header);
+
         if (!header) {
             const e = new Error(`Header ${contextHeader} is missing`);
             e.code = 400;
@@ -37,7 +40,10 @@ router.get('/', validateHeader, async (req, res) => {
         // eslint-disable-next-line no-unused-vars
         const ctx = getAppContext(header);
 
-        res.render('index');
+        req.session.user = ctx?.uid;
+        req.session.meetingUUID = ctx?.mid;
+
+        res.sendFile('index.html');
     } catch (e) {
         handleError(e);
     }

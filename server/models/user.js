@@ -18,8 +18,9 @@ const userSchema = new Schema(
 userSchema.plugin(encrypt, {
     encryptionKey,
     signingKey,
+    encryptedFields: [], // no need to encrypt the ID
     decryptPostSave: false,
-    additionalAuthenticatedFields: ['auth'],
+    additionalAuthenticatedFields: ['auth'], // encrypt the auth document
 });
 
 const User = mongoose.model('User', userSchema);

@@ -5,7 +5,7 @@ WORKDIR /home/node/app
 
 COPY package*.json ./
 
-FROM base as deps
+FROM base AS deps
 ARG NODE_ENV
 ENV NODE_ENV="${NODE_ENV}"
 RUN npm clean-install

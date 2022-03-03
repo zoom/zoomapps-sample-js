@@ -49,10 +49,8 @@ function createStore() {
     });
 }
 
-const db = {
+export default {
     connect,
     disconnect,
     createStore,
 };
-
-export default db;

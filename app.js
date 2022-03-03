@@ -28,7 +28,7 @@ const logFunc = (r) => {
 
         const endp = url || config?.url;
         const base = baseURL || config?.baseURL;
-        let str = new URL(endp, base);
+        let str = new URL(endp, base).href;
 
         if (method) str = `${method.toUpperCase()} ${str}`;
         if (status) str = `${status} ${str}`;
