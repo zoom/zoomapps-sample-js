@@ -22,14 +22,27 @@ const config = dotenvExpand.expand({
     parsed: dotenv.parse(buffer),
 }).parsed;
 
-// Check that we have all our configs
-let hasMissing = !config;
-for (const prop in config) {
-    const dep = config[prop];
-    const missing = !dep || typeof dep !== 'string';
+const deps = [
+    'ZM_CLIENT_ID',
+    'ZM_CLIENT_SECRET',
+    'ZM_REDIRECT_URI',
+    'ZM_HOST',
+    'SESSION_SECRET',
+    'MONGO_USER',
+    'MONGO_PASS',
+    'MONGO_URL',
+    'MONGO_KEY',
+    'MONGO_SIGN',
+];
 
-    if (missing) {
-        console.error(`${prop} is required`);
+// Check that we have all our config dependencies
+let hasMissing = !config;
+for (const dep in deps) {
+    const conf = deps[dep];
+    const str = config[conf];
+
+    if (!str || typeof str !== 'string') {
+        console.error(`${conf} is required`);
         hasMissing = true;
     }
 }
