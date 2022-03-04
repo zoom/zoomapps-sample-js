@@ -96,14 +96,18 @@ ngrok http 3000
 
 ## Usage
 
-1. Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
-    1. Home Page: `{{ Ngrok URL }}/`
-    2. Redirect URL: `{{ Ngrok URL }}/auth`
+Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
+
+1. Home Page: `{{ Ngrok URL }}/`
+2. Redirect URL: `{{ Ngrok URL }}/auth`
 
 **Example:** `https://foobar.ngrok.com:1234/auth`
 
-2. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us)
-3. Click **Install** from the Activation tab to install and open the app in your Zoom Client.
+Install the Zoom App for your user:
+
+1. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us) and Click **Install**
+2. or open your Zoom App in a browser and click the install link
+3. or navigate to `/install` in your browser
 
 ## Deployment
 
