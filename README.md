@@ -51,7 +51,11 @@ ZM_REDIRECT_URI=...
 #### Zoom for Government
 
 If you are a [ZfG](https://www.zoomgov.com/) customer you can use the `ZM_HOST` variable to change the base URL used for
-Zoom.
+Zoom. This will allow you to adjust to the different Marketplace and API Base URLs used by ZfG customers.
+
+**Marketplace URL:** marketplace.*zoomgov.com*
+
+**API Base URL:** api.*zoomgov.com*
 
 ## Start the App
 
