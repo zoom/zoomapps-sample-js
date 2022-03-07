@@ -54,6 +54,8 @@ if (hasMissing) {
 
 const p = config.PORT || process.env.PORT;
 
+export const appName = 'hello-zoom';
+
 export const zoomApp = {
     host: config.ZM_HOST,
     clientId: config.ZM_CLIENT_ID,

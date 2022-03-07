@@ -11,7 +11,7 @@
     "build": "docker build --build-arg NODE_ENV=production -t zoom-app .",
     "prepare": "npx husky install",
     "preprepare": "[ -d .git ] && [ -f .env ] && git update-index --assume-unchanged .env || true",
-    "clean": "docker compose down -v --remove-orphans --rmi local"
+    "clean": "docker compose down -v --remove-orphans --rmi all"
   },
   "dependencies": {
     "axios": "^0.26.0",

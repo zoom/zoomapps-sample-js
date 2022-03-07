@@ -1,7 +1,8 @@
 import http from 'http';
 import debug from 'debug';
+import { appName } from '../config.js';
 
-const dbg = debug('hello-zoom:http');
+const dbg = debug(`${appName}:http`);
 
 /**
  * Start the HTTP server

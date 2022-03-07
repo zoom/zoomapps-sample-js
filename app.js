@@ -13,13 +13,13 @@ import { startHTTP } from './server/server.js';
 import indexRoutes from './server/routes/index.js';
 import authRoutes from './server/routes/auth.js';
 
-import { mongoURL, port, sessionSecret } from './config.js';
+import { appName, port, mongoURL, sessionSecret } from './config.js';
 
 // connect to MongoDB
 await db.connect(mongoURL);
 
 /* App Config */
-const dbg = debug(`hello-zoom:app`);
+const dbg = debug(`${appName}:app`);
 
 const app = express();
 app.set('port', port);
@@ -38,7 +38,7 @@ const logFunc = (r) => {
         if (method) str = `${method.toUpperCase()} ${str}`;
         if (status) str = `${status} ${str}`;
 
-        debug(`hello-zoom:axios`)(str);
+        debug(`${appName}:axios`)(str);
     }
 
     return r;

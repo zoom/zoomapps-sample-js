@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 import MongoStore from 'connect-mongo';
 import debug from 'debug';
+import { appName } from '../config.js';
 
-const dbg = debug('hello-zoom:mongodb');
+const dbg = debug(`${appName}:mongodb`);
 
 /**
  * Connect to MongoDB
