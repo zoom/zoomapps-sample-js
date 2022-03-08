@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import db from './server/db.js';
 import debug from 'debug';
-import helmet, { contentSecurityPolicy } from 'helmet';
+import helmet from 'helmet';
 import logger from 'morgan';
 import session from 'express-session';
 import createError from 'http-errors';
@@ -85,7 +85,6 @@ app.use(
         },
         referrerPolicy: 'sameorigin',
         contentSecurityPolicy: {
-            ...contentSecurityPolicy.getDefaultDirectives(),
             directives: {
                 'default-src': 'self',
                 styleSrc: [
