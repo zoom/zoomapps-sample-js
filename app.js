@@ -8,14 +8,20 @@ import debug from 'debug';
 import helmet, { contentSecurityPolicy } from 'helmet';
 import logger from 'morgan';
 import session from 'express-session';
+import createError from 'http-errors';
 import { URL } from 'url';
-import { startHTTP } from './server/server.js';
 
+import { startHTTP } from './server/server.js';
 import indexRoutes from './server/routes/index.js';
 import authRoutes from './server/routes/auth.js';
 
-import { appName, mongoURL, port, sessionSecret } from './config.js';
-import createError from 'http-errors';
+import {
+    appName,
+    mongoURL,
+    port,
+    redirectUri,
+    sessionSecret,
+} from './config.js';
 
 const dirname = (path) => new URL(path, import.meta.url).pathname;
 
@@ -23,15 +29,22 @@ const dirname = (path) => new URL(path, import.meta.url).pathname;
 await db.connect(mongoURL);
 
 /* App Config */
+const app = express();
 const dbg = debug(`${appName}:app`);
+
+// CSP directives
+const redirectOrigin = new URL(redirectUri).origin;
+
+// views and assets
 const publicDir = dirname('public');
 const viewDir = dirname('server/views');
 
-const app = express();
-app.set('port', port);
 app.set('view engine', 'pug');
 app.set('views', viewDir);
 app.locals.basedir = publicDir;
+
+// HTTP
+app.set('port', port);
 
 // log Axios requests and responses
 const logFunc = (r) => {
@@ -83,8 +96,8 @@ app.use(
                     "'self'",
                     (req, res) => `'nonce-${res.locals.cspNonce}'`,
                 ],
+                imgSrc: ["'self'", redirectOrigin],
                 'connect-src': 'self',
-                'img-src': 'self',
                 'base-uri': 'self',
                 'form-action': 'self',
             },

@@ -54,27 +54,33 @@ if (hasMissing) {
 
 const p = config.PORT || process.env.PORT;
 
-export const appName = 'hello-zoom';
-
 export const zoomApp = {
+    name: config.APP_NAME || 'zoom-app',
     host: config.ZM_HOST,
     clientId: config.ZM_CLIENT_ID,
     clientSecret: config.ZM_CLIENT_SECRET,
     redirectUri: config.ZM_REDIRECT_URI,
 };
 
+// Zoom App Info
+export const appName = zoomApp.name;
+export const redirectUri = zoomApp.redirectUri;
+
+// MongoDB Session
 export const sessionSecret = config.SESSION_SECRET;
 
+// MongoDB and Mongoose
 export const mongoURL = config.MONGO_URL;
 export const encryptionKey = config.MONGO_KEY;
 export const signingKey = config.MONGO_SIGN;
 
+// HTTP
 export const port = p || '3000';
 
+// require secrets are explicitly imported
 export default {
+    appName,
+    redirectUri,
     port,
-    zoomApp,
     mongoURL,
-    signingKey,
-    encryptionKey,
 };

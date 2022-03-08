@@ -16,7 +16,7 @@ services:
     restart: always
     environment:
       - NODE_ENV=development
-      - DEBUG=hello-zoom:*
+      - DEBUG=${APP_NAME}:*
     ports:
       - "${PORT}:${PORT}"
     volumes:

@@ -16,6 +16,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "ignorePatterns": ["public/js/vendor/*.js"],
   "rules": {
     "import/extensions": [
       "error",
