@@ -1,17 +1,10 @@
-doctype html
-html(lang="en")
-    head
-        title= title
-        meta(charset='utf-8')
-        meta(http-equiv='X-UA-Compatible', content='IE=edge')
-        meta(name='description', content='Some description')
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        link(rel='stylesheet', href='/css/style.css')
-    body
-        h1= title
-        if isZoom
-            p Welcome to your Zoom app
-        else
-            p You're viewing your Zoom App through the browser&nbsp;
-                a(href=`${installURL}`) Click Here
-                | &nbsp;to install your app in Zoom
+extends layout
+
+block content
+    h1= title
+    if isZoom
+        p Welcome to your Zoom app
+    else
+        p You're viewing your Zoom App through the browser&nbsp;
+            a(href=`${installURL}`) Click Here
+            | &nbsp;to install your app in Zoom

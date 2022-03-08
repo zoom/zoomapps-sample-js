@@ -42,6 +42,7 @@ router.get('/', validateHeader, async (req, res, next) => {
         return res.render('index', {
             isZoom,
             title: `Hello ${name}`,
+            nonce: res.locals.cspNonce,
             installURL: getInstallURL(),
         });
     } catch (e) {

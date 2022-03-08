@@ -1,30 +1,37 @@
 import express from 'express';
-import session from 'express-session';
+import axios from 'axios';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import debug from 'debug';
-import logger from 'morgan';
-import { URL } from 'url';
-import axios from 'axios';
-import helmet, { contentSecurityPolicy } from 'helmet';
+import crypto from 'crypto';
 import db from './server/db.js';
+import debug from 'debug';
+import helmet, { contentSecurityPolicy } from 'helmet';
+import logger from 'morgan';
+import session from 'express-session';
+import { URL } from 'url';
 import { startHTTP } from './server/server.js';
 
 import indexRoutes from './server/routes/index.js';
 import authRoutes from './server/routes/auth.js';
 
-import { appName, port, mongoURL, sessionSecret } from './config.js';
+import { appName, mongoURL, port, sessionSecret } from './config.js';
+import createError from 'http-errors';
+
+const dirname = (path) => new URL(path, import.meta.url).pathname;
 
 // connect to MongoDB
 await db.connect(mongoURL);
 
 /* App Config */
 const dbg = debug(`${appName}:app`);
+const publicDir = dirname('public');
+const viewDir = dirname('server/views');
 
 const app = express();
 app.set('port', port);
 app.set('view engine', 'pug');
-app.set('views', new URL('server/views', import.meta.url).pathname);
+app.set('views', viewDir);
+app.locals.basedir = publicDir;
 
 // log Axios requests and responses
 const logFunc = (r) => {
@@ -48,6 +55,13 @@ axios.interceptors.request.use(logFunc);
 axios.interceptors.response.use(logFunc);
 
 /*  Middleware */
+
+// generate a nonce for inlining scripts and styles
+app.use((req, res, next) => {
+    res.locals.cspNonce = crypto.randomBytes(16).toString('hex');
+    next();
+});
+
 app.use(
     helmet({
         frameguard: {
@@ -60,10 +74,16 @@ app.use(
         contentSecurityPolicy: {
             ...contentSecurityPolicy.getDefaultDirectives(),
             directives: {
-                'default-src': '*',
-                'style-src': '* self unsafe-inline',
-                'script-src': '* self unsafe-inline',
-                'connect-src': '* self',
+                'default-src': 'self',
+                styleSrc: [
+                    "'self'",
+                    (req, res) => `'nonce-${res.locals.cspNonce}'`,
+                ],
+                scriptSrc: [
+                    "'self'",
+                    (req, res) => `'nonce-${res.locals.cspNonce}'`,
+                ],
+                'connect-src': 'self',
                 'img-src': 'self',
                 'base-uri': 'self',
                 'form-action': 'self',
@@ -77,7 +97,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev', { stream: { write: (msg) => dbg(msg) } }));
-app.use(express.static(new URL('public', import.meta.url).pathname));
+app.use(express.static(publicDir));
 
 app.use(
     session({
@@ -98,6 +118,27 @@ app.use(
 /* Routing */
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
+
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    next(createError(404));
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use(function (err, req, res, next) {
+    const status = err.status || 500;
+    const title = `Error ${err.status}`;
+
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    if (res.locals.error) dbg(`${title} %s`, err.stack);
+
+    // render the error page
+    res.status(status);
+    res.render('error');
+});
 
 // redirect users to the home page if they get a 404 route
 app.get('*', (req, res) => res.redirect('/'));
