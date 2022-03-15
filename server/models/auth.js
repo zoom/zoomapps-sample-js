@@ -20,7 +20,11 @@ export const authSchema = new Schema(
             type: String,
             ...options,
         },
-        expiresAt: { type: String, required: true },
+        expiresAt: {
+            type: String,
+            default: Date.now,
+            required: true,
+        },
         scope: String,
     },
     {
