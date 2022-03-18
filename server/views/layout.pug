@@ -9,12 +9,9 @@ html(lang="en")
         meta(name='description', content='Some description')
         meta(name='viewport', content='width=device-width, initial-scale=1')
         link(rel='stylesheet', href='/css/style.css')
-        style(nonce=`${nonce}`)
-            include /css/style.css
     body
         block content
-        script(type='application/javascript' nonce=`${nonce}`)
-            include /js/vendor/zoom-apps-js-sdk.0.13.0.js
-        script(type='module' nonce=`${nonce}`)
-            include /js/index.js
+        if isZoom
+            script(src='js/vendor/zoom-apps-js-sdk.0.13.0.js' type='application/javascript')
+            script(src='/js/index.js' type='module')
         noscript Javascript must be enabled to use this application
