@@ -25,7 +25,7 @@ const config = dotenvExpand.expand({
 const deps = [
     'ZM_CLIENT_ID',
     'ZM_CLIENT_SECRET',
-    'ZM_REDIRECT_URI',
+    'ZM_REDIRECT_URL',
     'ZM_HOST',
     'SESSION_SECRET',
     'MONGO_USER',
@@ -59,7 +59,7 @@ export const zoomApp = {
     host: config.ZM_HOST,
     clientId: config.ZM_CLIENT_ID,
     clientSecret: config.ZM_CLIENT_SECRET,
-    redirectUri: config.ZM_REDIRECT_URI,
+    redirectUri: config.ZM_REDIRECT_URL,
 };
 
 // Zoom App Info
