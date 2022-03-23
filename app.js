@@ -8,10 +8,9 @@ import debug from 'debug';
 import helmet from 'helmet';
 import logger from 'morgan';
 import session from 'express-session';
-import createError from 'http-errors';
 import { URL } from 'url';
 
-import { startHTTP } from './server/server.js';
+import { start } from './server/server.js';
 import indexRoutes from './server/routes/index.js';
 import authRoutes from './server/routes/auth.js';
 
@@ -131,13 +130,8 @@ app.use(
 app.use('/', indexRoutes);
 app.use('/auth', authRoutes);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-    next(createError(404));
-});
-
 // eslint-disable-next-line no-unused-vars
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
     const status = err.status || 500;
     const title = `Error ${err.status}`;
 
@@ -156,7 +150,7 @@ app.use(function (err, req, res, next) {
 app.get('*', (req, res) => res.redirect('/'));
 
 // start serving
-startHTTP(app, port).catch(async (e) => {
+start(app, port).catch(async (e) => {
     console.error(e);
     await db.disconnect();
     process.exit(1);

@@ -9,7 +9,7 @@ const dbg = debug(`${appName}:http`);
  * @param app - Express app to attach to
  * @param {String|number} port - local TCP port to serve from
  */
-export async function startHTTP(app, port) {
+export async function start(app, port) {
     // Create HTTP server
     const server = http.createServer(app);
 
