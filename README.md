@@ -18,11 +18,11 @@ Zoom Apps let you embed your application directly in the Zoom Client. Use this t
 
 You can follow [this guide]() to create a Zoom App with the [Zoom Marketplace](https://marketplace.zoom.us/).
 
-## Client ID and Client Secret
+### Client ID and Client Secret
 
 Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom App.
 
-## Home URL and Redirect URL
+### Home URL and Redirect URL
 
 In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your app is
 publicly accessible. Often the easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the
@@ -32,8 +32,6 @@ port you're serving on:
 ngrok http 3000
 ```
 
-## Usage
-
 Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
 
 1. Home Page: `{{ Ngrok URL }}/`
@@ -41,13 +39,7 @@ Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the fo
 
 **Example:** `https://foobar.ngrok.com:1234/auth`
 
-Install the Zoom App for your user:
-
-1. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us) and Click **Install**
-2. or open your Zoom App in a browser and click the install link
-3. or navigate to `/install` in your browser
-
-#### Scopes
+### Scopes
 
 Select the following OAuth scopes from the Scopes tab:
 
@@ -56,9 +48,11 @@ Select the following OAuth scopes from the Scopes tab:
 - user:read
 - zoomapp:inmeeting
 
-#### Zoom JS SDK Features
+### Zoom JS SDK Features
 
-    - shareApp
+Choose these features from the Zoom JS SDK section of the Features tab:
+
+- shareApp
 
 ## Installation
 
@@ -144,17 +138,10 @@ ngrok http 3000
 
 ## Usage
 
-Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
-
-1. Home Page: `{{ Ngrok URL }}/`
-2. Redirect URL: `{{ Ngrok URL }}/auth`
-
-**Example:** `https://foobar.ngrok.com:1234/auth`
-
 Install the Zoom App for your user:
 
 1. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us) and Click **Install**
-2. or open your Zoom App in a browser and click the install link
+2. or open your Zoom App in a browser (localhost:3000 by default) and click the install link
 3. or navigate to `/install` in your browser
 
 ## Deployment
