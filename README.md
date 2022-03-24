@@ -9,12 +9,56 @@ Zoom Apps let you embed your application directly in the Zoom Client. Use this t
 1. [Node JS](https://nodejs.org/en/)
 2. [Docker](https://docker.io/)
 3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-4. [Zoom App]() OAuth Credentials
+4. [Zoom App]() OAuth Credentials (instructions below)
     1. Client ID
     2. Client Secret
     3. Redirect URI
 
+### Create your Zoom App
+
 You can follow [this guide]() to create a Zoom App with the [Zoom Marketplace](https://marketplace.zoom.us/).
+
+## Client ID and Client Secret
+
+Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom App.
+
+## Home URL and Redirect URL
+
+In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your app is
+publicly accessible. Often the easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the
+port you're serving on:
+
+```shell
+ngrok http 3000
+```
+
+## Usage
+
+Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
+
+1. Home Page: `{{ Ngrok URL }}/`
+2. Redirect URL: `{{ Ngrok URL }}/auth`
+
+**Example:** `https://foobar.ngrok.com:1234/auth`
+
+Install the Zoom App for your user:
+
+1. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us) and Click **Install**
+2. or open your Zoom App in a browser and click the install link
+3. or navigate to `/install` in your browser
+
+#### Scopes
+
+Select the following OAuth scopes from the Scopes tab:
+
+- meeting:read
+- meeting:write
+- user:read
+- zoomapp:inmeeting
+
+#### Zoom JS SDK Features
+
+    - shareApp
 
 ## Installation
 
