@@ -10,11 +10,9 @@ async function configure() {
     });
 }
 
-(async () => {
-    try {
-        const configResponse = await configure();
-        console.debug('Zoom JS SDK Configuration', configResponse);
-    } catch (e) {
-        console.error(e);
-    }
-})();
+try {
+    const configResponse = await configure();
+    console.debug('Zoom JS SDK Configuration', configResponse);
+} catch (e) {
+    console.error(e);
+}

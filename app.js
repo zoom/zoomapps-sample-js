@@ -35,12 +35,12 @@ const dbg = debug(`${appName}:app`);
 const redirectOrigin = new URL(redirectUri).origin;
 
 // views and assets
-const publicDir = dirname('public');
+const appDir = dirname('app');
 const viewDir = dirname('server/views');
 
 app.set('view engine', 'pug');
 app.set('views', viewDir);
-app.locals.basedir = publicDir;
+app.locals.basedir = appDir;
 
 // HTTP
 app.set('port', port);
@@ -74,41 +74,43 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(
-    helmet({
-        frameguard: {
-            action: 'sameorigin',
+const headers = {
+    frameguard: {
+        action: 'sameorigin',
+    },
+    hsts: {
+        maxAge: 31536000,
+    },
+    referrerPolicy: 'sameorigin',
+    contentSecurityPolicy: {
+        directives: {
+            'default-src': 'self',
+            styleSrc: [
+                "'self'",
+                (req, res) => `'nonce-${res.locals.cspNonce}'`,
+            ],
+            scriptSrc: [
+                "'self'",
+                (req, res) => `'nonce-${res.locals.cspNonce}'`,
+            ],
+            imgSrc: ["'self'", redirectOrigin],
+            'connect-src': 'self',
+            'base-uri': 'self',
+            'form-action': 'self',
         },
-        hsts: {
-            maxAge: 31536000,
-        },
-        referrerPolicy: 'sameorigin',
-        contentSecurityPolicy: {
-            directives: {
-                'default-src': 'self',
-                styleSrc: [
-                    "'self'",
-                    (req, res) => `'nonce-${res.locals.cspNonce}'`,
-                ],
-                scriptSrc: [
-                    "'self'",
-                    (req, res) => `'nonce-${res.locals.cspNonce}'`,
-                ],
-                imgSrc: ["'self'", redirectOrigin],
-                'connect-src': 'self',
-                'base-uri': 'self',
-                'form-action': 'self',
-            },
-        },
-    })
-);
+    },
+};
+
+app.use(helmet(headers));
 
 app.use(express.json());
 app.use(compression());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev', { stream: { write: (msg) => dbg(msg) } }));
-app.use(express.static(publicDir));
+
+// serve our app folder
+app.use(express.static(appDir));
 
 app.use(
     session({
