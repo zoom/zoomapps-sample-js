@@ -16,14 +16,5 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "ignorePatterns": ["app/js/vendor/*.js"],
-  "rules": {
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "always"
-      }
-    ]
-  }
+  "ignorePatterns": ["app/js/vendor/*.js"]
 }
