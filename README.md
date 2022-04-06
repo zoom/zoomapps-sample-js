@@ -1,4 +1,4 @@
-# Hello Zoom Apps
+# Zoom App Template
 
 Use of this sample app is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
@@ -59,13 +59,13 @@ Choose these features from the Zoom JS SDK section of the Features tab:
 To get started clone the repo:
 
 ```shell
-git clone https://github.com/zoom/hello-zoom-apps.git
+git clone https://github.com/zoom/za-template.git
 ```
 
-Once cloned navigate to the `hello-zoom-app` directory:
+Once cloned navigate to the `za-template` directory:
 
 ```
-cd hello-zoom-apps
+cd za-template
 ```
 
 Then install dependencies. Docker will do this within the container, but it's useful to have local packages for
