@@ -1,5 +1,6 @@
-# We ignore the .env file through git
-# https://stackoverflow.com/questions/17195861/undo-git-update-index-assume-unchanged-file
+# dotenv environment variables file
+.env
+!.env.sample
 
 
 ### JetBrains template
@@ -7,19 +8,6 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 .idea
-
-# Gradle and Maven with auto-import
-# When using Gradle or Maven with auto-import, you should exclude module files,
-# since they will be recreated, and may cause churn.  Uncomment if using
-# auto-import.
-# .idea/artifacts
-# .idea/compiler.xml
-# .idea/jarRepositories.xml
-# .idea/modules.xml
-# .idea/*.iml
-# .idea/modules
-# *.iml
-# *.ipr
 
 ### NotepadPP template
 # Notepad++ backups #
@@ -44,20 +32,13 @@
 *.dylib
 *.dll
 
-# Fortran module files
-*.mod
-*.smod
-
 # Compiled Static libraries
 *.lai
 *.la
 *.a
 *.lib
 
-# Executables
-*.exe
-*.out
-*.app
+
 
 ### VisualStudioCode template
 .vscode/*
@@ -181,15 +162,6 @@ web_modules/
 
 # Yarn Integrity file
 .yarn-integrity
-
-# dotenv environment variables file
-
-# We ignore the .env file through git
-# https://stackoverflow.com/questions/17195861/undo-git-update-index-assume-unchanged-file
-#.env
-
-
-.env.*
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -856,4 +828,3 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
-

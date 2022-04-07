@@ -35,12 +35,12 @@ const dbg = debug(`${appName}:app`);
 const redirectHost = new URL(redirectUri).host;
 
 // views and assets
-const appDir = dirname('app');
+const staticDir = dirname('dist');
 const viewDir = dirname('server/views');
 
 app.set('view engine', 'pug');
 app.set('views', viewDir);
-app.locals.basedir = appDir;
+app.locals.basedir = staticDir;
 
 // HTTP
 app.set('port', port);
@@ -81,7 +81,7 @@ const headers = {
     hsts: {
         maxAge: 31536000,
     },
-    referrerPolicy: 'sameorigin',
+    referrerPolicy: 'same-origin',
     contentSecurityPolicy: {
         directives: {
             'default-src': 'self',
@@ -109,9 +109,6 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger('dev', { stream: { write: (msg) => dbg(msg) } }));
 
-// serve our app folder
-app.use(express.static(appDir));
-
 app.use(
     session({
         secret: sessionSecret,
@@ -127,6 +124,9 @@ app.use(
         store: db.createStore(),
     })
 );
+
+// serve our app folder
+app.use(express.static(staticDir));
 
 /* Routing */
 app.use('/', indexRoutes);

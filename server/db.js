@@ -24,9 +24,8 @@ async function connect(uri) {
     mongoose.Promise = global.Promise;
 
     process.on('SIGINT', () => {
-        dbg('SIGINT caught => closing connection');
-
         mongoose.connection.close(() => dbg('connection closed'));
+        process.exit(1)
     });
 }
 

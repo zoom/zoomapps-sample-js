@@ -9,18 +9,3 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASS}
-  zoom-app:
-    build: ./
-    working_dir: /home/node/app
-    container_name: 'zoom-app'
-    restart: always
-    environment:
-      - NODE_ENV=development
-      - DEBUG=${APP_NAME}:*
-    ports:
-      - "${PORT}:${PORT}"
-    volumes:
-      - ./:/home/node/app
-      - /home/node/app/node_modules
-    depends_on:
-      - mongodb
