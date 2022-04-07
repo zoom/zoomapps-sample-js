@@ -5,16 +5,12 @@
   "exports": "./server",
   "private": true,
   "scripts": {
-    "start": "node app.js",
     "prestart": "npm run build",
-    "dev-app": "npm run build -- --watch",
-    "dev-server": "nodemon -q app.js",
-    "build": "babel public --out-dir dist --ignore '**/vendor/*.js' --copy-files",
-    "dev": "concurrently -kn dev- -c inverse.magenta,inverse.green npm:dev-*",
-    "postprepare": "chmod +x ./gen-secrets.sh && $_",
-    "predev": "docker compose up -d",
+    "start": "node app.js",
+    "dev": ".scripts/dev.sh",
+    "build": "babel public -d dist -D",
     "prepare": "npx husky install",
-    "clean": "docker compose down -v --remove-orphans"
+    "postprepare": "chmod -R +x .scripts && $_/gen-secrets.sh"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -24,6 +20,7 @@
     "cookie-parser": "~1.4.6",
     "debug": "~4.3.3",
     "dotenv": "^16.0.0",
+    "dotenv-cli": "^5.1.0",
     "dotenv-expand": "^8.0.1",
     "express": "~4.17.3",
     "express-session": "^1.17.2",
@@ -34,21 +31,32 @@
     "mongoose": "^6.2.3",
     "mongoose-encryption": "^2.1.2",
     "morgan": "~1.10.0",
-    "nodemon": "^2.0.15",
     "pug": "^3.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",
     "@babel/core": "^7.17.9",
     "@babel/preset-env": "^7.16.11",
-    "babel-watch": "^7.7.0",
     "eslint": "^8.9.0",
     "eslint-config-prettier": "^8.4.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.4",
-    "prettier": "^2.5.1"
+    "prettier": "^2.5.1",
+    "nodemon": "^2.0.15"
+  },
+  "nodemonConfig": {
+    "quiet": true,
+    "watch": [
+      "server/**/*.js",
+      "app.js",
+      "config.js",
+      ".env"
+    ]
   },
   "babel": {
+    "ignore": [
+      "**/vendor/*.js"
+    ],
     "presets": [
       "@babel/preset-env"
     ]
