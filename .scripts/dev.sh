@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-##
+#
 # Prepare the development servers for backend and frontend
-##
+#
 
 set -eu
 

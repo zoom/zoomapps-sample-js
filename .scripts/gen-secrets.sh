@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 
-##
+#
 # Generate random values to use as development secrets
-##
+#
 
 set -eu
 
