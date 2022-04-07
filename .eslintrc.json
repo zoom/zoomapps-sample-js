@@ -12,5 +12,5 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "ignorePatterns": ["app/js/vendor/*.js"]
+  "ignorePatterns": ["**/vendor/*.js"]
 }

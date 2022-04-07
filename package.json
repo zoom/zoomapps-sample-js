@@ -6,13 +6,15 @@
   "private": true,
   "scripts": {
     "start": "node app.js",
-    "predev": "docker compose up -d mongodb",
-    "dev": "concurrently -k -c inverse.magenta,inverse.green npm:watch npm:start",
-    "watch": "babel app --out-dir dist --watch --ignore \"**/vendor/*.js\" --copy-files",
-    "build": "docker build --build-arg NODE_ENV=production -t zoom-app .",
-    "prepare": "npx husky install",
+    "prestart": "npm run build",
+    "dev-app": "npm run build -- --watch",
+    "dev-server": "nodemon -q app.js",
+    "build": "babel public --out-dir dist --ignore '**/vendor/*.js' --copy-files",
+    "dev": "concurrently -kn dev- -c inverse.magenta,inverse.green npm:dev-*",
     "postprepare": "chmod +x ./gen-secrets.sh && $_",
-    "clean": "docker compose down -v --remove-orphans --rmi local"
+    "predev": "docker compose up -d",
+    "prepare": "npx husky install",
+    "clean": "docker compose down -v --remove-orphans"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -32,6 +34,7 @@
     "mongoose": "^6.2.3",
     "mongoose-encryption": "^2.1.2",
     "morgan": "~1.10.0",
+    "nodemon": "^2.0.15",
     "pug": "^3.0.2"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 # dotenv environment variables file
 .env
+.env.*
 !.env.sample
 
 
@@ -30,7 +31,7 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
+*.dllgit st
 
 # Compiled Static libraries
 *.lai

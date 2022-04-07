@@ -6,6 +6,14 @@
 
 set -eu
 
+file=".env"
+sample="$file.sample"
+
+# copy the sample to .env if it doesn't exist
+if [ ! -f "$file" ] && [ -f "$sample" ]; then
+  cp "$sample" "$file"
+fi
+
 # generate a key 32 bits in length
 dword() {
   openssl rand -base64 32
@@ -47,13 +55,10 @@ env_vars=$(echo "${env_vars}" | cut -c 2-)
 allow_list=$(echo "${allow_list}" | cut -c 2-)
 
 # shellcheck disable=SC2086
-new_env=$(env $env_vars envsubst "${allow_list}" <.env)
-
-# prevent .env changes from being tracked by git
-git update-index --assume-unchanged .env
+new_env=$(env $env_vars envsubst "${allow_list}" <$file)
 
 # send replaced env vars to the .env file
-echo "${new_env}" >.env
-echo "$(basename "$0") - Generated secrets for .env"
+echo "${new_env}" >$file
+echo "$(basename "$0") - Generated secrets for $file"
 
 exit

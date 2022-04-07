@@ -77,8 +77,8 @@ npm install
 
 ## Setup
 
-To start, fill out the [.env](.env) file with your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom
-App. No other fields need to be updated for development and many will be generated in the next section.
+Rename the [.env.sample](.env.sample) file to .env and enter your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom
+App. 
 
 ```dotenv
 ZM_CLIENT_ID=...
@@ -107,9 +107,8 @@ npm run dev
 
 The `dev` npm script will:
 
-1. Generate random secrets for development
+1. 
 2. Start MongoDB in a container
-3. Start the Zoom App in a container
 
 ### Production
 
