@@ -27,6 +27,11 @@ const dirname = (path) => new URL(path, import.meta.url).pathname;
 // connect to MongoDB
 await db.connect(mongoURL);
 
+process.on('SIGINT', async () => {
+    await db.disconnect();
+    process.exit(1);
+});
+
 /* App Config */
 const app = express();
 const dbg = debug(`${appName}:app`);

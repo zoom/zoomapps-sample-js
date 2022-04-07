@@ -22,11 +22,6 @@ async function connect(uri) {
     await mongoose.connect(uri);
 
     mongoose.Promise = global.Promise;
-
-    process.on('SIGINT', () => {
-        mongoose.connection.close(() => dbg('connection closed'));
-        process.exit(1)
-    });
 }
 
 /**
