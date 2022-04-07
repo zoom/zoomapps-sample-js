@@ -1,18 +1,18 @@
 # Zoom App Template
 
-Use of this sample app is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
+Use of this sample server is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
 
-Zoom Apps let you embed your application directly in the Zoom Client. Use this template to make something awesome!
+This Zoom App Template uses Node + Express.js to build a Hello World Zoom App.
 
 ## Prerequisites
 
 1. [Node JS](https://nodejs.org/en/)
 2. [Docker](https://docker.io/)
 3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-4. [Zoom App]() OAuth Credentials (instructions below)
-    1. Client ID
-    2. Client Secret
-    3. Redirect URI
+4. [Zoom App Credentials]() (Instructions below)
+   1. Client ID
+   2. Client Secret
+   3. Redirect URI
 
 ### Create your Zoom App
 
@@ -20,13 +20,15 @@ You can follow [this guide]() to create a Zoom App with the [Zoom Marketplace](h
 
 ### Client ID and Client Secret
 
-Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom App.
+Once your server is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom
+App.
 
 ### Home URL and Redirect URL
 
-In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your app is
-publicly accessible. Often the easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the
-port you're serving on:
+In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your server is
+publicly accessible.
+
+The easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the port you're serving on:
 
 ```shell
 ngrok http 3000
@@ -77,8 +79,8 @@ npm install
 
 ## Setup
 
-Rename the [.env.sample](.env.sample) file to .env and enter your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom
-App. 
+To start, fill out the [.env](.env) file with your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom
+App. No other fields need to be updated for development and many will be generated in the next section.
 
 ```dotenv
 ZM_CLIENT_ID=...
@@ -105,49 +107,43 @@ Run the `dev` npm script to start in development mode using a Docker container.
 npm run dev
 ```
 
-The `dev` npm script will:
+The `dev` script will:
 
-1. 
-2. Start MongoDB in a container
+1. Start mongodb in a container
+2. Watch Vue.js files and built to the dist/ folder
+3. Watch Server files and build to the dist/folder
+4. Start the application
 
 ### Production
 
-You can use the `build` script to output a production docker image of your Zoom App. Make sure that you have configured
-production keys and secrets in your .env file or through the Secrets Manager of your cloud platform.
+Make sure that you have configured production keys and secrets in your .env file or through the Secrets Manager of your
+cloud platform.
+
+Build for production
 
 ```shell
 npm run build
 ```
 
-To start the app run the container that was built:
+Start the server
 
 ```shell
-docker run -p 80:80 zoom-app
+cd dist
+npm start
 ````
-
-## Serve over HTTPS
-
-In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your app is
-publicly accessible. Often the easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the
-port you're serving on:
-
-```shell
-ngrok http 3000
-```
 
 ## Usage
 
 Install the Zoom App for your user:
 
 1. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us) and Click **Install**
-2. or open your Zoom App in a browser (localhost:3000 by default) and click the install link
-3. or navigate to `/install` in your browser
+2. or open your Zoom App in a browser ([http://localhost:3000](http://localhost:3000) by default) and click the '
+   install' link
 
 ## Deployment
 
-You can deploy this app on any service that allows you to host dynamic Node.js apps. If you're using Docker,
-use `docker build` to build for production and deploy to a server that has MongoDB configured natively or in another
-container (similar to [docker-compose.yml]())
+You can deploy this server on any service that allows you to host dynamic Node.js apps. You'll first want to make sure
+that you've configured a MongoDB server to connect to.
 
 1. [Heroku](https://devcenter.heroku.com/articles/deploying-nodejs)
 2. [Google Cloud](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/nodejs)
@@ -155,8 +151,8 @@ container (similar to [docker-compose.yml]())
 
 ## Without Docker
 
-Building without Docker requires that you have an instance of MongoDB running natively, you've populated the .env with
-secrets, and you have adjusted the MongoDB credentials.
+Building without Docker requires that you have an instance of MongoDB running natively or remotely, you've populated the
+.env with secrets, and you have adjusted the MongoDB credentials.
 
 The first step, as usual, is to enter your **Client ID**, **Client Secret** and **Redirect URI** for your Zoom App in
 the [.env](.env) file. The following steps are unique to building without Docker:
@@ -170,31 +166,6 @@ Run `gen-secrets.sh` to generate development secrets or manually enter your own 
 Change `MONGO_USER` and `MONGO_PASS` to match the user of your database. Then, adjust the format of `MONGO_URL` to match
 the connection string of your server.
 
-##### Install Dependencies
-
-Make sure you install dependencies when building locally
-
-```shell
-npm install
-```
-
-##### Start the App
-
-You can use NODE_ENV to set the environment when starting the app locally. Take a look at [package.json](package.json)
-for best practices.
-
-###### Development
-
-```shell
-npm start
-```
-
-###### Production
-
-```shell
-NODE_ENV=production npm start
-```
-
 ## Contribution
 
 Please send pull requests and issues to this project for any problems or suggestions that you have! Make sure that you
@@ -205,14 +176,6 @@ install packages locally to pass pre-commit git hooks.
 The application will use loaded data instead of pure environment variables. This adds an extra layer of protection for
 secrets while developing locally. In a production environment, you should use a Secret Manager from your hosting
 platform instead.
-
-The [.env](.env) file should never be part of a commit or merge request and is automatically ignored by git after
-running one of the following:
-
-1. `npm install`
-2. `npm run prepare`
-3. `npm run dev`
-4. `gen-secrets.sh`
 
 ### Code Style
 
@@ -228,5 +191,3 @@ At this time there are no e2e or unit tests.
 If you're looking for help, try [Developer Support](https://devsupport.zoom.us) or
 our [Developer Forum](https://devforum.zoom.us). Priority support is also available
 with [Premier Developer Support](https://zoom.us/docs/en-us/developer-support-plans.html) plans.
-
-
