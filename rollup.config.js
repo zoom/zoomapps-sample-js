@@ -47,7 +47,7 @@ const plugins = [
                 {
                     targets: {
                         browsers:
-                            '> 0.5%, last 3 versions, not dead, not ie 11',
+                            '> 0.25%, last 4 major versions, not dead, not ie 11',
                     },
                     corejs: 3,
                     useBuiltIns: 'usage',
