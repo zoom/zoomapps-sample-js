@@ -31,8 +31,7 @@
     "mongoose": "^6.2.3",
     "mongoose-encryption": "^2.1.2",
     "morgan": "~1.10.0",
-    "pug": "^3.0.2",
-    "rollup-plugin-inline-code": "^1.2.7"
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.6",

@@ -17,9 +17,10 @@ const input = `${src}/js/index.js`;
 const out = `${dest}/js/${name}`;
 
 const plugins = [
-    resolve(),
+    resolve({
+        browser: true,
+    }),
     commonjs(),
-    production && terser(),
     del({ targets: `${dest}}/*` }),
     copy({
         targets: [
@@ -62,6 +63,7 @@ const plugins = [
             ],
         ],
     }),
+    production && terser(),
 ];
 
 export default [
