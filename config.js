@@ -2,7 +2,20 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import dotenvExpand from 'dotenv-expand';
 
-// Read .env directly to avoid adding secrets to the environment
+const deps = [
+    'ZM_CLIENT_ID',
+    'ZM_CLIENT_SECRET',
+    'ZM_REDIRECT_URL',
+    'ZM_HOST',
+    'SESSION_SECRET',
+    'MONGO_USER',
+    'MONGO_PASS',
+    'MONGO_URL',
+    'MONGO_KEY',
+    'MONGO_SIGN',
+];
+
+// Read .env directly to avoid adding secrets to process.env
 const fileName = '.env';
 const filePath = new URL(fileName, import.meta.url).pathname;
 
@@ -21,19 +34,6 @@ const config = dotenvExpand.expand({
     ignoreProcessEnv: true,
     parsed: dotenv.parse(buffer),
 }).parsed;
-
-const deps = [
-    'ZM_CLIENT_ID',
-    'ZM_CLIENT_SECRET',
-    'ZM_REDIRECT_URL',
-    'ZM_HOST',
-    'SESSION_SECRET',
-    'MONGO_USER',
-    'MONGO_PASS',
-    'MONGO_URL',
-    'MONGO_KEY',
-    'MONGO_SIGN',
-];
 
 // Check that we have all our config dependencies
 let hasMissing = !config;

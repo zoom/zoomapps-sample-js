@@ -10,9 +10,9 @@ This Zoom App Template uses Node + Express.js to build a Hello World Zoom App.
 2. [Docker](https://docker.io/)
 3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
 4. [Zoom App Credentials]() (Instructions below)
-   1. Client ID
-   2. Client Secret
-   3. Redirect URI
+    1. Client ID
+    2. Client Secret
+    3. Redirect URI
 
 ### Create your Zoom App
 
@@ -99,9 +99,12 @@ Zoom. This will allow you to adjust to the different Marketplace and API Base UR
 
 ## Start the App
 
+To test out the app, start in development mode. The production mode requires that you have a MongoDB server configured
+and a connection string.
+
 ### Development
 
-Run the `dev` npm script to start in development mode using a Docker container.
+Start the server in development mode and watch for changes
 
 ```shell
 npm run dev
@@ -110,26 +113,16 @@ npm run dev
 The `dev` script will:
 
 1. Start mongodb in a container
-2. Watch Vue.js files and built to the dist/ folder
-3. Watch Server files and build to the dist/folder
+2. Watch for changes to the js files in the public/ folder
+3. Watch for changes to the server
 4. Start the application
 
 ### Production
 
-Make sure that you have configured production keys and secrets in your .env file or through the Secrets Manager of your
-cloud platform.
-
-Build for production
+****
 
 ```shell
-npm run build
-```
-
-Start the server
-
-```shell
-cd dist
-npm start
+NODE_ENV=production npm start
 ````
 
 ## Usage
@@ -149,22 +142,15 @@ that you've configured a MongoDB server to connect to.
 2. [Google Cloud](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/nodejs)
 3. [AWS](https://aws.amazon.com/getting-started/hands-on/deploy-nodejs-web-app/)
 
-## Without Docker
+### Secrets
 
-Building without Docker requires that you have an instance of MongoDB running natively or remotely, you've populated the
-.env with secrets, and you have adjusted the MongoDB credentials.
+- Use the production credentials from your Zoom App
+- Generate production credentials for the session, and mongodb
+- Store your secrets using a secret manager on your hosting platform
 
-The first step, as usual, is to enter your **Client ID**, **Client Secret** and **Redirect URI** for your Zoom App in
-the [.env](.env) file. The following steps are unique to building without Docker:
+### MongoDB
 
-##### Add your DB and Session Secrets
-
-Run `gen-secrets.sh` to generate development secrets or manually enter your own secrets for production.
-
-##### Change the MongoDB Connection String
-
-Change `MONGO_USER` and `MONGO_PASS` to match the user of your database. Then, adjust the format of `MONGO_URL` to match
-the connection string of your server.
+Change the connection string to point to your production MongoDB server
 
 ## Contribution
 

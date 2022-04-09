@@ -1,5 +1,9 @@
 /* global zoomSdk */
 
+import moment from 'moment';
+
+console.log(moment);
+
 async function configure() {
     return zoomSdk.config({
         size: { width: 480, height: 360 },
@@ -10,9 +14,11 @@ async function configure() {
     });
 }
 
-try {
-    const configResponse = await configure();
-    console.debug('Zoom JS SDK Configuration', configResponse);
-} catch (e) {
-    console.error(e);
-}
+(async () => {
+    try {
+        const configResponse = await configure();
+        console.debug('Zoom JS SDK Configuration', configResponse);
+    } catch (e) {
+        console.error(e);
+    }
+})();
