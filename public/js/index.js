@@ -1,9 +1,5 @@
 /* global zoomSdk */
 
-import moment from 'moment';
-
-console.log(moment);
-
 async function configure() {
     return zoomSdk.config({
         size: { width: 480, height: 360 },
