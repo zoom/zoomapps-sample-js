@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import fs from 'fs';
 import dotenvExpand from 'dotenv-expand';
 
 const deps = [
@@ -15,25 +14,10 @@ const deps = [
     'MONGO_SIGN',
 ];
 
-// Read .env directly to avoid adding secrets to process.env
-const fileName = '.env';
-const filePath = new URL(fileName, import.meta.url).pathname;
-
-if (!fs.existsSync(filePath))
-    throw new Error(`config file ${filePath} does not exist`);
-
-let buffer;
-try {
-    buffer = fs.readFileSync(filePath);
-} catch (e) {
-    throw new Error(`Failed to read config: ${e.message}`);
-}
+const env = dotenv.config();
 
 // Replace MongoDB connection string templates
-const config = dotenvExpand.expand({
-    ignoreProcessEnv: true,
-    parsed: dotenv.parse(buffer),
-}).parsed;
+const config = dotenvExpand.expand(env).parsed;
 
 // Check that we have all our config dependencies
 let hasMissing = !config;
