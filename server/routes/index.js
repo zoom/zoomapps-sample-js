@@ -3,6 +3,7 @@ import { header } from 'express-validator';
 import { handleError, sanitize } from '../helpers/routing.js';
 import { contextHeader, getAppContext } from '../helpers/cipher.js';
 import { getInstallURL } from '../helpers/zoom-api.js';
+import session from '../session';
 
 const router = express.Router();
 
@@ -54,8 +55,11 @@ router.get('/', validateHeader, async (req, res, next) => {
  * Install Route - Install the Zoom App from the Zoom Marketplace
  * this route is used when a user installs the app from the Zoom Client
  */
-router.get('/install', validateHeader, async (req, res) =>
-    res.redirect(getInstallURL())
-);
+router.get('/install', session, async (req, res) => {
+    const url = getInstallURL();
+    const state = url.searchParams.get('state');
+    req.session.state = state;
+    res.redirect(url.toString());
+});
 
 export default router;

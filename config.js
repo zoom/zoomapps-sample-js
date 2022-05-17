@@ -44,6 +44,7 @@ export const zoomApp = {
     clientId: config.ZM_CLIENT_ID,
     clientSecret: config.ZM_CLIENT_SECRET,
     redirectUri: config.ZM_REDIRECT_URL,
+    sessionSecret: config.SESSION_SECRET,
 };
 
 // Zoom App Info
