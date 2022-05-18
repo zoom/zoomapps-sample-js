@@ -31,25 +31,25 @@ for (const dep in deps) {
     }
 }
 
-if (hasMissing) {
-    console.error('Missing required .env values...exiting');
-    process.exit(1);
-}
+if (hasMissing) throw new Error('Missing required .env values...exiting');
 
-const p = config.PORT || process.env.PORT;
+try {
+    new URL(config.ZM_REDIRECT_URL);
+} catch (e) {
+    throw new Error(`Invalid ZM_REDIRECT_URL: ${e.message}`);
+}
 
 export const zoomApp = {
     name: config.APP_NAME || 'zoom-app',
     host: config.ZM_HOST,
     clientId: config.ZM_CLIENT_ID,
     clientSecret: config.ZM_CLIENT_SECRET,
-    redirectUri: config.ZM_REDIRECT_URL,
-    sessionSecret: config.SESSION_SECRET,
+    redirectUrl: config.ZM_REDIRECT_URL,
 };
 
 // Zoom App Info
 export const appName = zoomApp.name;
-export const redirectUri = zoomApp.redirectUri;
+export const redirectUri = zoomApp.redirectUrl;
 
 // MongoDB Session
 export const sessionSecret = config.SESSION_SECRET;
@@ -60,7 +60,7 @@ export const encryptionKey = config.MONGO_KEY;
 export const signingKey = config.MONGO_SIGN;
 
 // HTTP
-export const port = p || '3000';
+export const port = config.PORT || '3000';
 
 // require secrets are explicitly imported
 export default {
