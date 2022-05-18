@@ -2,6 +2,7 @@ import axios from 'axios';
 import { URL } from 'url';
 import { zoomApp } from '../../config.js';
 import createError from 'http-errors';
+import crypto from 'crypto';
 
 // Get Zoom API URL from Zoom Host value
 const host = new URL(zoomApp.host);
@@ -62,11 +63,13 @@ export function getAuthHeader(token) {
 }
 
 export function getInstallURL() {
+    const state = crypto.randomBytes(32).toString('base64');
     const url = new URL('/oauth/authorize', zoomApp.host);
     url.searchParams.set('response_type', 'code');
     url.searchParams.set('client_id', zoomApp.clientId);
     url.searchParams.set('redirect_uri', zoomApp.redirectUri);
-    return url.href;
+    url.searchParams.set('state', state);
+    return url;
 }
 
 /**
