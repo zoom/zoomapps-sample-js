@@ -7,9 +7,8 @@ This Zoom App Template uses Node + Express.js to build a Hello World Zoom App.
 ## Prerequisites
 
 1. [Node JS](https://nodejs.org/en/)
-2. [Docker](https://docker.io/)
-3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-4. [Zoom App Credentials]() (Instructions below)
+2. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
+3. [Zoom App Credentials]() (Instructions below)
     1. Client ID
     2. Client Secret
     3. Redirect URI
@@ -70,8 +69,7 @@ Once cloned navigate to the `za-template` directory:
 cd za-template
 ```
 
-Then install dependencies. Docker will do this within the container, but it's useful to have local packages for
-development and for your IDE.
+Then install dependencies
 
 ```shell
 npm install
@@ -99,8 +97,7 @@ Zoom. This will allow you to adjust to the different Marketplace and API Base UR
 
 ## Start the App
 
-To test out the app, start in development mode. The production mode requires that you have a MongoDB server configured
-and a connection string.
+To test out the app, start in development mode
 
 ### Development
 
@@ -112,7 +109,6 @@ npm run dev
 
 The `dev` script will:
 
-1. Start mongodb in a container
 2. Watch for changes to the js files in the public/ folder
 3. Watch for changes to the server
 4. Start the application
@@ -142,16 +138,6 @@ that you've configured a MongoDB server to connect to.
 2. [Google Cloud](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/nodejs)
 3. [AWS](https://aws.amazon.com/getting-started/hands-on/deploy-nodejs-web-app/)
 
-### Secrets
-
-- Use the production credentials from your Zoom App
-- Generate production credentials for the session, and mongodb
-- Store your secrets using a secret manager on your hosting platform
-
-### MongoDB
-
-Change the connection string to point to your production MongoDB server
-
 ## Contribution
 
 Please send pull requests and issues to this project for any problems or suggestions that you have! Make sure that you
@@ -159,9 +145,8 @@ install packages locally to pass pre-commit git hooks.
 
 ### Keeping secrets secret
 
-The application will use loaded data instead of pure environment variables. This adds an extra layer of protection for
-secrets while developing locally. In a production environment, you should use a Secret Manager from your hosting
-platform instead.
+When running the application for production, you'll want to set environment variables on the hosting platform that you'
+re using. This might include using a secret manager or a CI/CD pipeline to set the values instead of the .env file.
 
 ### Code Style
 
