@@ -5,13 +5,7 @@ const deps = [
     'ZM_CLIENT_ID',
     'ZM_CLIENT_SECRET',
     'ZM_REDIRECT_URL',
-    'ZM_HOST',
     'SESSION_SECRET',
-    'MONGO_USER',
-    'MONGO_PASS',
-    'MONGO_URL',
-    'MONGO_KEY',
-    'MONGO_SIGN',
 ];
 
 const env = dotenv.config();
@@ -40,19 +34,17 @@ try {
 }
 
 export const zoomApp = {
-    name: config.APP_NAME || 'zoom-app',
-    host: config.ZM_HOST,
+    name: config.APP_NAME || 'hello-zoom',
+    host: config.ZM_HOST || 'https://zoom.us',
     clientId: config.ZM_CLIENT_ID,
     clientSecret: config.ZM_CLIENT_SECRET,
     redirectUrl: config.ZM_REDIRECT_URL,
+    sessionSecret: config.SESSION_SECRET,
 };
 
 // Zoom App Info
 export const appName = zoomApp.name;
 export const redirectUri = zoomApp.redirectUrl;
-
-// MongoDB Session
-export const sessionSecret = config.SESSION_SECRET;
 
 // MongoDB and Mongoose
 export const mongoURL = config.MONGO_URL;

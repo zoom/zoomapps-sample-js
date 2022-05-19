@@ -2,12 +2,9 @@ import express from 'express';
 import { query } from 'express-validator';
 
 import { handleError, sanitize } from '../helpers/routing.js';
-import { getDeeplink, getToken, getZoomUser } from '../helpers/zoom-api.js';
+import { getDeeplink, getToken } from '../helpers/zoom-api.js';
 
-import Auth from '../models/auth.js';
-import User from '../models/user.js';
-
-import session from '../session';
+import session from '../session.js';
 
 const router = express.Router();
 
@@ -41,26 +38,7 @@ router.get('/', session, validateQuery, async (req, res, next) => {
         await sanitize(req);
 
         // get Access Token from Zoom
-        const {
-            scope,
-            expires_in,
-            access_token: accessToken,
-            refresh_token: refreshToken,
-        } = await getToken(req.query.code);
-
-        // create a new Auth object for this user
-        const auth = await Auth.create({
-            scope,
-            accessToken,
-            refreshToken,
-            expiresAt: Date.now() + expires_in * 1000,
-        });
-
-        // get the ID of this user
-        const { id } = await getZoomUser('me', accessToken);
-
-        // create a new user if one doesn't exist
-        await User.updateOne({ id }, { id, auth }, { upsert: true });
+        const { access_token: accessToken } = await getToken(req.query.code);
 
         // fetch deeplink from Zoom API
         const deeplink = await getDeeplink(accessToken);

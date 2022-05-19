@@ -1,10 +1,10 @@
 import cookieSession from 'cookie-session';
-import config from '../config';
+import { zoomApp } from '../config.js';
 
 export default cookieSession({
     name: 'session',
     httpOnly: true,
-    keys: [config.zoomApp.sessionSecret],
+    keys: [zoomApp.sessionSecret],
     maxAge: 24 * 60 * 60 * 1000,
     secure: true,
 });

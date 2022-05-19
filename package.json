@@ -1,5 +1,5 @@
 {
-  "name": "hello-zoom-apps",
+  "name": "hello-zoom",
   "version": "0.0.0",
   "type": "module",
   "exports": "./server",
@@ -7,16 +7,15 @@
   "scripts": {
     "prestart": "npm run build",
     "start": "node app.js",
-    "dev": "scripts/dev.sh",
+    "dev": "node scripts/dev.cjs",
     "build": "rollup -c",
     "prepare": "npx husky install",
-    "postprepare": "chmod -R +x scripts && $_/gen-secrets.sh"
+    "postprepare": "node scripts/gen-secrets.js"
   },
   "dependencies": {
     "axios": "^0.26.0",
     "compression": "^1.7.4",
     "concurrently": "^7.1.0",
-    "connect-mongo": "^4.6.0",
     "cookie-parser": "~1.4.6",
     "cookie-session": "^2.0.0",
     "debug": "~4.3.3",
@@ -44,6 +43,7 @@
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@rollup/plugin-url": "^6.1.0",
     "core-js": "^3.21.1",
+    "envsub": "^4.0.7",
     "eslint": "^8.9.0",
     "eslint-config-prettier": "^8.4.0",
     "husky": "^7.0.4",

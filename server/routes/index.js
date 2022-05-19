@@ -3,7 +3,7 @@ import { header } from 'express-validator';
 import { handleError, sanitize } from '../helpers/routing.js';
 import { contextHeader, getAppContext } from '../helpers/cipher.js';
 import { getInstallURL } from '../helpers/zoom-api.js';
-import session from '../session';
+import session from '../session.js';
 
 const router = express.Router();
 
