@@ -1,5 +1,4 @@
 import dotenv from 'dotenv';
-import dotenvExpand from 'dotenv-expand';
 
 const deps = [
     'ZM_CLIENT_ID',
@@ -8,10 +7,7 @@ const deps = [
     'SESSION_SECRET',
 ];
 
-const env = dotenv.config();
-
-// Replace MongoDB connection string templates
-const config = dotenvExpand.expand(env).parsed;
+const config = dotenv.config().parsed;
 
 // Check that we have all our config dependencies
 let hasMissing = !config;
@@ -46,11 +42,6 @@ export const zoomApp = {
 export const appName = zoomApp.name;
 export const redirectUri = zoomApp.redirectUrl;
 
-// MongoDB and Mongoose
-export const mongoURL = config.MONGO_URL;
-export const encryptionKey = config.MONGO_KEY;
-export const signingKey = config.MONGO_SIGN;
-
 // HTTP
 export const port = config.PORT || '3000';
 
@@ -59,5 +50,4 @@ export default {
     appName,
     redirectUri,
     port,
-    mongoURL,
 };
