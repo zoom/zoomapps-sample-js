@@ -30,7 +30,6 @@ try {
 }
 
 export const zoomApp = {
-    name: config.APP_NAME || 'hello-zoom',
     host: config.ZM_HOST || 'https://zoom.us',
     clientId: config.ZM_CLIENT_ID,
     clientSecret: config.ZM_CLIENT_SECRET,
@@ -39,7 +38,7 @@ export const zoomApp = {
 };
 
 // Zoom App Info
-export const appName = zoomApp.name;
+export const appName = config.APP_NAME || 'hello-zoom';
 export const redirectUri = zoomApp.redirectUrl;
 
 // HTTP

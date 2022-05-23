@@ -27,18 +27,8 @@ router.get('/', validateHeader, async (req, res, next) => {
 
         const header = req.header(contextHeader);
 
-        let name = 'Browser';
-        let isZoom = false;
-
-        if (header) {
-            const ctx = getAppContext(header);
-
-            req.session.user = ctx.uid;
-            req.session.meetingUUID = ctx.mid;
-
-            isZoom = true;
-            name = 'Zoom';
-        }
+        const isZoom = header && getAppContext(header);
+        const name = isZoom ? 'name' : 'Browser';
 
         return res.render('index', {
             isZoom,
