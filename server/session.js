@@ -6,5 +6,5 @@ export default cookieSession({
     httpOnly: true,
     keys: [zoomApp.sessionSecret],
     maxAge: 24 * 60 * 60 * 1000,
-    secure: true,
+    secure: process.env.NODE_ENV === 'production',
 });

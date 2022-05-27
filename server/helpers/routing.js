@@ -6,17 +6,14 @@ import createError from 'http-errors';
  * @param {Request} req - HTTP request to operate on
  */
 export function sanitize(req) {
-    return new Promise((resolve, reject) => {
-        const errors = validationResult(req);
+    const errors = validationResult(req);
 
-        if (errors.isEmpty()) resolve();
+    if (errors.isEmpty()) return;
 
-        const { msg } = errors.array({ onlyFirstError: true })[0];
-        const e = new Error(msg);
-        e.code = 400;
-
-        reject(e);
-    });
+    const { msg } = errors.array({ onlyFirstError: true })[0];
+    const e = new Error(msg);
+    e.code = 400;
+    throw e;
 }
 
 /**

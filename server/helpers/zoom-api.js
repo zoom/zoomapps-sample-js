@@ -69,7 +69,7 @@ export function getInstallURL() {
     url.searchParams.set('client_id', zoomApp.clientId);
     url.searchParams.set('redirect_uri', zoomApp.redirectUrl);
     url.searchParams.set('state', state);
-    return url;
+    return { url, state };
 }
 
 /**

@@ -1,5 +1,6 @@
 import envsub from 'envsub';
 import crypto from 'crypto';
+import fs from 'fs';
 
 const outputFile = '.env';
 const templateFile = `${outputFile}.sample`;
@@ -14,4 +15,7 @@ const options = {
     ],
 };
 
-envsub({ templateFile, outputFile, options }).catch((e) => console.error(e));
+if (!fs.existsSync(outputFile))
+    envsub({ templateFile, outputFile, options }).catch((e) =>
+        console.error(e)
+    );

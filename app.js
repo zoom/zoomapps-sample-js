@@ -2,7 +2,6 @@ import express from 'express';
 import axios from 'axios';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
-import crypto from 'crypto';
 import debug from 'debug';
 import helmet from 'helmet';
 import logger from 'morgan';
@@ -56,13 +55,6 @@ axios.interceptors.request.use(logFunc);
 axios.interceptors.response.use(logFunc);
 
 /*  Middleware */
-
-// generate a nonce for inlining scripts and styles
-app.use((req, res, next) => {
-    res.locals.cspNonce = crypto.randomBytes(16).toString('hex');
-    next();
-});
-
 const headers = {
     frameguard: {
         action: 'sameorigin',

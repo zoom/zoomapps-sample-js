@@ -32,11 +32,11 @@ const validateQuery = [
  * The user is redirected to this route when they authorize your app
  */
 router.get('/', session, validateQuery, async (req, res, next) => {
-    try {
-        req.session.state = req.query?.state;
+    req.session.state = null;
 
+    try {
         // sanitize code and state query parameters
-        await sanitize(req);
+        sanitize(req);
 
         // get Access Token from Zoom
         const { access_token: accessToken } = await getToken(req.query.code);
@@ -47,10 +47,8 @@ router.get('/', session, validateQuery, async (req, res, next) => {
         // redirect the user to the Zoom Client
         res.redirect(deeplink);
     } catch (e) {
-        req.session.state = null;
         next(handleError(e));
     }
-    req.session.state = null;
 });
 
 export default router;
