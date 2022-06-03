@@ -69,7 +69,7 @@ Once cloned navigate to the `za-template` directory:
 cd za-template
 ```
 
-Then install dependencies
+Then install dependencies. This will automatically copy the .env.sample file to .env and set up the project.
 
 ```shell
 npm install
