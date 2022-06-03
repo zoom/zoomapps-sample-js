@@ -115,6 +115,11 @@ The `dev` script will:
 
 ### Production
 
+When running your application in production no logs are sent to the console by default and the server is not restarted
+on file changes.
+
+We use the `NODE_ENV` environment variable here to tell the application to start in prodcution mode.
+
 ****
 
 ```shell
