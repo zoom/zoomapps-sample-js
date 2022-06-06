@@ -1,5 +1,4 @@
-import dotenv from 'dotenv';
-
+const isProd = process.env.NODE_ENV === 'production';
 const deps = [
     'ZM_CLIENT_ID',
     'ZM_CLIENT_SECRET',
@@ -7,7 +6,10 @@ const deps = [
     'SESSION_SECRET',
 ];
 
-const config = dotenv.config().parsed;
+let dotenv;
+if (!isProd) dotenv = await import('dotenv');
+
+const config = isProd ? process.env : dotenv?.config().parsed;
 
 // Check that we have all our config dependencies
 let hasMissing = !config;
