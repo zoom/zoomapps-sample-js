@@ -150,8 +150,14 @@ install packages locally to pass pre-commit git hooks.
 
 ### Keeping secrets secret
 
-When running the application for production, you'll want to set environment variables on the hosting platform that you'
-re using. This might include using a secret manager or a CI/CD pipeline to set the values instead of the .env file.
+This application makes use of your Zoom App Client ID and Client Secret as well as a custom secret for signing session cookies. During development,
+
+> :warning: **Never commit your .env file to version control:** The file likely contains Zoom App Credentials and Session Secrets
+
+In order to align with security best practices, this application does not read from the .env file in production mode.
+
+This means you'll want to set environment variables on the hosting platform that you'
+re using instead of within the .env file. This might include using a secret manager or a CI/CD pipeline.
 
 ### Code Style
 
