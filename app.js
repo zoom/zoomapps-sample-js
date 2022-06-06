@@ -19,7 +19,6 @@ const dirname = (path) => new URL(path, import.meta.url).pathname;
 const app = express();
 const dbg = debug(`${appName}:app`);
 
-// CSP directives
 const redirectHost = new URL(redirectUri).host;
 
 // views and assets
