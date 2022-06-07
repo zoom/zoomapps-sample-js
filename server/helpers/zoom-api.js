@@ -73,12 +73,13 @@ export function getAuthHeader(token) {
 export function getInstallURL() {
     const state = crypto.randomBytes(32).toString('base64');
 
-    const verifier = crypto.randomBytes(32);
+    const verifier = crypto.randomBytes(32).toString('ascii');
 
     const digest = crypto
         .createHash('sha256')
         .update(verifier)
-        .digest('base64');
+        .digest('base64')
+        .toString();
 
     const challenge = base64URLEncode(digest);
 
@@ -89,6 +90,7 @@ export function getInstallURL() {
     url.searchParams.set('code_challenge', challenge);
     url.searchParams.set('code_challenge_method', 'S256');
     url.searchParams.set('state', state);
+
     return { url, state, verifier };
 }
 
