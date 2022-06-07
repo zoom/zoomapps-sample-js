@@ -6,9 +6,17 @@ import crypto from 'crypto';
 
 // Get Zoom API URL from Zoom Host value
 const host = new URL(zoomApp.host);
-host.hostname = host.hostname.replace(/^/, 'api.');
+host.hostname = `api.${host.hostname}`;
 
 const baseURL = host.href;
+
+function base64URLEncode(str) {
+    return str
+        .toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+}
 
 /**
  * Generic function for getting access or refresh tokens
@@ -64,25 +72,39 @@ export function getAuthHeader(token) {
 
 export function getInstallURL() {
     const state = crypto.randomBytes(32).toString('base64');
+
+    const verifier = crypto.randomBytes(32);
+
+    const digest = crypto
+        .createHash('sha256')
+        .update(verifier)
+        .digest('base64');
+
+    const challenge = base64URLEncode(digest);
+
     const url = new URL('/oauth/authorize', zoomApp.host);
     url.searchParams.set('response_type', 'code');
     url.searchParams.set('client_id', zoomApp.clientId);
     url.searchParams.set('redirect_uri', zoomApp.redirectUrl);
+    url.searchParams.set('code_challenge', challenge);
+    url.searchParams.set('code_challenge_method', 'S256');
     url.searchParams.set('state', state);
-    return { url, state };
+    return { url, state, verifier };
 }
 
 /**
  * Obtains an OAuth access token from Zoom
  * @param {string} code - Authorization code from user authorization
+ * @param verifier - code_verifier for PKCE
  * @return {Promise}  Promise resolving to the access token object
  */
-export async function getToken(code) {
+export async function getToken(code, verifier) {
     if (!code || typeof code !== 'string')
         throw createError(500, 'authorization code must be a valid string');
 
     return tokenRequest({
         code,
+        code_verifier: verifier,
         redirect_uri: zoomApp.redirectUrl,
         grant_type: 'authorization_code',
     });

@@ -33,8 +33,9 @@ router.get('/', async (req, res, next) => {
  * this route is used when a user installs the app from the Zoom Client
  */
 router.get('/install', session, async (req, res) => {
-    const { url, state } = getInstallURL();
+    const { url, state, verifier } = getInstallURL();
     req.session.state = state;
+    req.session.verifier = verifier;
     res.redirect(url.href);
 });
 

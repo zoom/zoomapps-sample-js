@@ -38,8 +38,13 @@ router.get('/', session, validateQuery, async (req, res, next) => {
         // sanitize code and state query parameters
         sanitize(req);
 
+        const code = req.query.code;
+        const verifier = req.session.verifier;
+
+        req.session.verifier = null;
+
         // get Access Token from Zoom
-        const { access_token: accessToken } = await getToken(req.query.code);
+        const { access_token: accessToken } = await getToken(code, verifier);
 
         // fetch deeplink from Zoom API
         const deeplink = await getDeeplink(accessToken);
