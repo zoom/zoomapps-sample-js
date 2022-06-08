@@ -4,19 +4,22 @@ import { zoomApp } from '../../config.js';
 import createError from 'http-errors';
 import crypto from 'crypto';
 
+// returns a base64 encoded url
+const base64URL = (s) =>
+    s
+        .toString('base64')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+
+// returns a random string of format fmt
+const rand = (fmt, depth = 32) => crypto.randomBytes(depth).toString(fmt);
+
 // Get Zoom API URL from Zoom Host value
 const host = new URL(zoomApp.host);
 host.hostname = `api.${host.hostname}`;
 
 const baseURL = host.href;
-
-function base64URLEncode(str) {
-    return str
-        .toString('base64')
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
-}
 
 /**
  * Generic function for getting access or refresh tokens
@@ -67,8 +70,6 @@ function apiRequest(method, endpoint, token, data = null) {
  * @return {{verifier: string, state: string, url: module:url.URL}}
  */
 export function getInstallURL() {
-    const rand = (fmt) => crypto.randomBytes(32).toString(fmt);
-
     const state = rand('base64');
     const verifier = rand('ascii');
 
@@ -78,7 +79,7 @@ export function getInstallURL() {
         .digest('base64')
         .toString();
 
-    const challenge = base64URLEncode(digest);
+    const challenge = base64URL(digest);
 
     const url = new URL('/oauth/authorize', zoomApp.host);
 
@@ -101,6 +102,9 @@ export function getInstallURL() {
 export async function getToken(code, verifier) {
     if (!code || typeof code !== 'string')
         throw createError(500, 'authorization code must be a valid string');
+
+    if (!verifier || typeof verifier !== 'string')
+        throw createError(500, 'code verifier code must be a valid string');
 
     return tokenRequest({
         code,
