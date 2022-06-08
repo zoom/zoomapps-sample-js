@@ -60,13 +60,13 @@ Choose these features from the Zoom JS SDK section of the Features tab:
 To get started clone the repo:
 
 ```shell
-git clone https://github.com/zoom/za-template.git
+git clone https://github.com/zoom/zoomapps-sample-js.git
 ```
 
-Once cloned navigate to the `za-template` directory:
+Once cloned navigate to the `zoomapps-sample-js` directory:
 
 ```
-cd za-template
+cd zoomapps-sample-js
 ```
 
 Then install dependencies. This will automatically copy the .env.sample file to .env and set up the project.
@@ -150,14 +150,16 @@ install packages locally to pass pre-commit git hooks.
 
 ### Keeping secrets secret
 
-This application makes use of your Zoom App Client ID and Client Secret as well as a custom secret for signing session cookies. During development,
+This application makes use of your Zoom App Client ID and Client Secret as well as a custom secret for signing session
+cookies. During development, the application will read from the .env file. ;
 
-> :warning: **Never commit your .env file to version control:** The file likely contains Zoom App Credentials and Session Secrets
-
-In order to align with security best practices, this application does not read from the .env file in production mode.
+In order to align with security best
+practices, this application does not read from the .env file in production mode.
 
 This means you'll want to set environment variables on the hosting platform that you'
 re using instead of within the .env file. This might include using a secret manager or a CI/CD pipeline.
+
+> :warning: **Never commit your .env file to version control:** The file likely contains Zoom App Credentials and Session Secrets
 
 ### Code Style
 

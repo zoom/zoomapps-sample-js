@@ -44,6 +44,7 @@ function tokenRequest(params, id = '', secret = '') {
 }
 
 /**
+ * Generic function for making requests to the Zoom API
  * @param {string} method - Request method
  * @param {string | URL} endpoint - Zoom API Endpoint
  * @param {string} token - Access Token
@@ -56,24 +57,20 @@ function apiRequest(method, endpoint, token, data = null) {
         baseURL,
         url: `/v2${endpoint}`,
         headers: {
-            Authorization: getAuthHeader(token),
+            Authorization: `Bearer ${token}`,
         },
     }).then(({ data }) => Promise.resolve(data));
 }
 
 /**
- * Get the authorization header for the Zoom API
- * @param {string} token - Access Token
- * @return {string} Zoom API Authorization header
+ * Return the url, state and verifier for the Zoom App Install
+ * @return {{verifier: string, state: string, url: module:url.URL}}
  */
-export function getAuthHeader(token) {
-    return `Bearer ${token}`;
-}
-
 export function getInstallURL() {
-    const state = crypto.randomBytes(32).toString('base64');
+    const rand = (fmt) => crypto.randomBytes(32).toString(fmt);
 
-    const verifier = crypto.randomBytes(32).toString('ascii');
+    const state = rand('base64');
+    const verifier = rand('ascii');
 
     const digest = crypto
         .createHash('sha256')
@@ -84,6 +81,7 @@ export function getInstallURL() {
     const challenge = base64URLEncode(digest);
 
     const url = new URL('/oauth/authorize', zoomApp.host);
+
     url.searchParams.set('response_type', 'code');
     url.searchParams.set('client_id', zoomApp.clientId);
     url.searchParams.set('redirect_uri', zoomApp.redirectUrl);
