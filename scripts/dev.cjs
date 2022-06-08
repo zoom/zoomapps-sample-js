@@ -1,9 +1,11 @@
 const concurrently = require("concurrently")
 const pkg = require("../package.json")
 
+const n = pkg.name
+
 const {result} = concurrently([
         {
-            command: `DEBUG='${pkg.name}*' nodemon app.js`,
+            command: `APP_NAME='${n}' DEBUG='${n}*' nodemon app.js`,
             name: 'dev-server',
             prefixColor: 'inverse.cyan'
         },

@@ -1,15 +1,15 @@
-const isProd = process.env.NODE_ENV === 'production';
+if (process.env.NODE_ENV !== 'production') {
+    const dotenv = await import('dotenv');
+    dotenv.config();
+}
+
+const config = process.env;
 const deps = [
     'ZM_CLIENT_ID',
     'ZM_CLIENT_SECRET',
     'ZM_REDIRECT_URL',
     'SESSION_SECRET',
 ];
-
-let dotenv;
-if (!isProd) dotenv = await import('dotenv');
-
-const config = isProd ? process.env : dotenv?.config().parsed;
 
 // Check that we have all our config dependencies
 let hasMissing = !config;
@@ -40,7 +40,7 @@ export const zoomApp = {
 };
 
 // Zoom App Info
-export const appName = config.APP_NAME || 'hello-zoom';
+export const appName = config.APP_NAME || 'zoom-app';
 export const redirectUri = zoomApp.redirectUrl;
 
 // HTTP
