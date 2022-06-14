@@ -19,7 +19,7 @@ You can follow [this guide]() to create a Zoom App with the [Zoom Marketplace](h
 
 ### Client ID and Client Secret
 
-Once your server is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom
+Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom
 App.
 
 ### Home URL and Redirect URL
