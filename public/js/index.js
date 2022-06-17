@@ -1,20 +1,17 @@
 /* global zoomSdk */
 
-async function configure() {
-    return zoomSdk.config({
-        size: { width: 480, height: 360 },
-        capabilities: [
-            /* Add Capabilities Here */
-            'shareApp',
-        ],
-    });
-}
-
-(async () => {
+window.addEventListener('load', async () => {
     try {
-        const configResponse = await configure();
+        const configResponse = await zoomSdk.config({
+            size: { width: 480, height: 360 },
+            capabilities: [
+                /* Add Capabilities Here */
+                'shareApp',
+            ],
+        });
+
         console.debug('Zoom JS SDK Configuration', configResponse);
     } catch (e) {
         console.error(e);
     }
-})();
+});
