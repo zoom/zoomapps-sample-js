@@ -1,6 +1,8 @@
-import envsub from 'envsub';
-import crypto from 'crypto';
-import fs from 'fs';
+const envsub = require('envsub')
+const crypto = require('crypto')
+const fs = require('fs')
+
+const {name} = require('../package.json')
 
 const outputFile = '.env';
 const templateFile = `${outputFile}.sample`;
@@ -11,6 +13,10 @@ const options = {
         {
             name: '_SESSION_SECRET',
             value: crypto.randomBytes(32).toString('hex'),
+        },
+        {
+            name: '_APP_NAME',
+            value: name,
         },
     ],
 };

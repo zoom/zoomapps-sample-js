@@ -7,20 +7,26 @@ This Zoom App Template uses Node + Express.js to build a Hello World Zoom App.
 ## Prerequisites
 
 1. [Node JS](https://nodejs.org/en/)
-2. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-3. [Zoom App Credentials]() (Instructions below)
+2. [Ngrok](https://ngrok.com)
+3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
+4. [Zoom App Credentials]() (Instructions below)
     1. Client ID
     2. Client Secret
-    3. Redirect URI
+    3. Redirect URL
+
+## Zoom Marketplace Configuration
+
+Follow the steps below to configure your Zoom App within the Zoom Marketplace. For further instructions,
+see [this video series]() on how to create and configure these sample Zoom Apps.
 
 ### Create your Zoom App
 
-You can follow [this guide]() to create a Zoom App with the [Zoom Marketplace](https://marketplace.zoom.us/).
+You can follow [this guide](https://marketplace.zoom.us/docs/beta-docs/zoom-apps/createazoomapp) to create a Zoom App
+with the [Zoom Marketplace](https://marketplace.zoom.us/).
 
 ### Client ID and Client Secret
 
-Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom
-App.
+Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom App.
 
 ### Home URL and Redirect URL
 
@@ -35,25 +41,20 @@ ngrok http 3000
 
 Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
 
-1. Home Page: `{{ Ngrok URL }}/`
-2. Redirect URL: `{{ Ngrok URL }}/auth`
+1. Home Page: `https://example.ngrok.io`
+2. Redirect URL: `https://example.ngrok.io/auth`
 
-**Example:** `https://foobar.ngrok.com:1234/auth`
+### Features Tab
 
-### Scopes
-
-Select the following OAuth scopes from the Scopes tab:
-
-- meeting:read
-- meeting:write
-- user:read
-- zoomapp:inmeeting
-
-### Zoom JS SDK Features
-
-Choose these features from the Zoom JS SDK section of the Features tab:
+Click the Add APIs button under this section Choose these features from the Zoom JS SDK section of the Features tab:
 
 - shareApp
+
+### Scopes Tab
+
+On the Scopes tab Select the following OAuth scopes from the Scopes tab:
+
+- zoomapp:inmeeting
 
 ## Installation
 
@@ -88,7 +89,7 @@ ZM_REDIRECT_URL=...
 
 #### Zoom for Government
 
-If you are a [ZfG](https://www.zoomgov.com/) customer you can use the `ZM_HOST` variable to change the base URL used for
+If you are a [ZfG](https://www.zoomgov.com/) customer you can set the `ZM_HOST` environment variable to change the base URL used for
 Zoom. This will allow you to adjust to the different Marketplace and API Base URLs used by ZfG customers.
 
 **Marketplace URL:** marketplace.*zoomgov.com*
@@ -118,7 +119,7 @@ The `dev` script will:
 When running your application in production no logs are sent to the console by default and the server is not restarted
 on file changes.
 
-We use the `NODE_ENV` environment variable here to tell the application to start in prodcution mode.
+We use the `NODE_ENV` environment variable here to tell the application to start in production mode.
 
 ****
 
@@ -153,8 +154,7 @@ install packages locally to pass pre-commit git hooks.
 This application makes use of your Zoom App Client ID and Client Secret as well as a custom secret for signing session
 cookies. During development, the application will read from the .env file. ;
 
-In order to align with security best
-practices, this application does not read from the .env file in production mode.
+In order to align with security best practices, this application does not read from the .env file in production mode.
 
 This means you'll want to set environment variables on the hosting platform that you'
 re using instead of within the .env file. This might include using a secret manager or a CI/CD pipeline.

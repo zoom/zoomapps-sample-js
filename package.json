@@ -7,10 +7,10 @@
   "scripts": {
     "prestart": "npm run build",
     "start": "node app.js",
-    "dev": "node scripts/dev.cjs",
+    "dev": "node scripts/dev.js",
     "build": "rollup -c",
     "prepare": "npx husky install",
-    "postprepare": "node scripts/gen-secrets.js"
+    "postprepare": "node scripts/gen-secrets.cjs"
   },
   "dependencies": {
     "axios": "^0.26.0",

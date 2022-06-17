@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser';
 import debug from 'debug';
 import helmet from 'helmet';
 import logger from 'morgan';
-import { URL } from 'url';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { start } from './server/server.js';
 import indexRoutes from './server/routes/index.js';
@@ -13,7 +14,7 @@ import authRoutes from './server/routes/auth.js';
 
 import { appName, port, redirectUri } from './config.js';
 
-const dirname = (path) => new URL(path, import.meta.url).pathname;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 /* App Config */
 const app = express();
@@ -22,8 +23,8 @@ const dbg = debug(`${appName}:app`);
 const redirectHost = new URL(redirectUri).host;
 
 // views and assets
-const staticDir = dirname('dist');
-const viewDir = dirname('server/views');
+const staticDir = `${__dirname}/dist`;
+const viewDir = `${__dirname}/server/views`;
 
 app.set('view engine', 'pug');
 app.set('views', viewDir);
