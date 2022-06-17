@@ -63,6 +63,7 @@ const headers = {
         maxAge: 31536000,
     },
     referrerPolicy: 'same-origin',
+    crossOriginEmbedderPolicy: false,
     contentSecurityPolicy: {
         directives: {
             'default-src': 'self',
