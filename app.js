@@ -6,7 +6,7 @@ import debug from 'debug';
 import helmet from 'helmet';
 import logger from 'morgan';
 import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { fileURLToPath, URL } from 'url';
 
 import { start } from './server/server.js';
 import indexRoutes from './server/routes/index.js';
