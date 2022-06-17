@@ -1,6 +1,6 @@
 /* global zoomSdk */
 
-window.addEventListener('load', async () => {
+(async () => {
     try {
         const configResponse = await zoomSdk.config({
             size: { width: 480, height: 360 },
@@ -14,4 +14,4 @@ window.addEventListener('load', async () => {
     } catch (e) {
         console.error(e);
     }
-});
+})();
