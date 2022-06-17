@@ -7,7 +7,7 @@ This Zoom App Sample uses Node.js + Express to build a simple Hello World Zoom A
 1. [Node JS](https://nodejs.org/en/)
 2. [Ngrok](https://ngrok.com/docs/getting-started)
 3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-4. [Zoom App Credentials]() (Instructions below)
+4. [Zoom App Credentials](#config:-app-credentials) (Instructions below)
     1. Client ID
     2. Client Secret
     3. Redirect URI
