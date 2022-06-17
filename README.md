@@ -1,97 +1,120 @@
-# Zoom App JavaScript Sample
+# Zoom Apps JavaScript Sample
 
-Use of this sample server is subject to our [Terms of Use](https://zoom.us/docs/en-us/zoom_api_license_and_tou.html)
-
-This Zoom App Template uses Node + Express.js to build a Hello World Zoom App.
+This Zoom App Sample uses Node.js + Express to build a simple Hello World Zoom App.
 
 ## Prerequisites
 
 1. [Node JS](https://nodejs.org/en/)
-2. [Ngrok](https://ngrok.com)
+2. [Ngrok](https://ngrok.com/docs/getting-started)
 3. [Zoom Account](https://support.zoom.us/hc/en-us/articles/207278726-Plan-Types-)
-4. [Zoom App Credentials](#zoom-marketplace-configuration)
+4. [Zoom App Credentials]() (Instructions below)
     1. Client ID
     2. Client Secret
-    3. Redirect URL
+    3. Redirect URI
 
-## Installation
+## Getting started
 
-To get started clone the repo:
+Open your terminal:
 
-```shell
-$ git clone https://github.com/zoom/zoomapps-sample-js.git
+```bash
+# Clone down this repository
+git clone git@github.com/zoom/zoomapps-sample-js
+
+# navigate into the cloned project directory
+cd zoomapps-sample-js
+
+# run NPM to install the app dependencies
+npm install
+
+# initialize your ngrok session
+ngrok http 3000
 ```
-
-Once cloned navigate to the `zoomapps-sample-js` directory:
-
-```shell
-$ cd zoomapps-sample-js
-```
-
-Then install dependencies. This will automatically copy the .env.sample file to .env and set up the project.
-
-```shell
-$ npm install
-```
-
-In order to use the Zoom App within Zoom you'll want to make sure that you're serving over HTTPS and your server is
-publicly accessible.
-
-The easiest way to accomplish this is to use a tool like [Ngrok](https://ngrok.com) with the port you're serving on:
-
-```shell
-$ ngrok http 3000
-```
-
-## Zoom Marketplace Configuration
-
-Follow the steps below to configure your Zoom App within the Zoom Marketplace. For further instructions,
-see [this video series]() on how to create and configure these sample Zoom Apps.
 
 ### Create your Zoom App
 
-You can follow [this guide](https://marketplace.zoom.us/docs/beta-docs/zoom-apps/createazoomapp) to create a Zoom App
-with the [Zoom Marketplace](https://marketplace.zoom.us/).
+In your web browser, navigate to [Zoom Developer Portal](https://developers.zoom.us/) and register/log into your
+developer account.
 
-### Client ID and Client Secret
+Click the "Build App" button at the top and choose to "Zoom Apps" application.
 
-Once your app is created, you can obtain your Client ID and Client Secret from the App Credentials tab of your Zoom App.
+1. Name your app
+2. Choose whether to list your app on the marketplace or not
+3. Click "Create"
 
-### Home URL and Redirect URL
+For more information, you can follow [this guide](https://marketplace.zoom.us/docs/beta-docs/zoom-apps/createazoomapp)
+check out  [this video series]() on how to create and configure these sample Zoom Apps.
 
-Use the Ngrok URL to configure your Zoom App on the Zoom Marketplace with the following information:
+### Config: App Credentials
 
-1. Home Page: `https://example.ngrok.io`
-2. Redirect URL: `https://example.ngrok.io/auth`
+In your terminal where you launched `ngrok`, find the `Forwarding` value and copy/paste that into the "Home URL" and "
+Redirect URL for OAuth" fields.
 
-### Features Tab
+```
+Home URL:               https://xxxxx.ngrok.io
+Redirect URL for OAuth: https://xxxxx.ngrok.io/auth
+```
 
-Click the Add APIs button under the Zoom JS SDK section choose these APIs:
+> NOTE: ngrok URLs under ngrok's Free plan are ephemeral, meaning they will only live for up to a couple hours at most, and will change every time you reinitialize the application. This will require you to update these fields every time you restart your ngrok service.
 
-- **APIs**
-    - shareApp
+#### OAuth allow list
 
-### Scopes Tab
+- `https://example.ngrok.io`
 
-On the Scopes tab Select the following OAuth scopes from the Scopes tab:
+#### Domain allow list
 
-- zoomapp:inmeeting
+- `appssdk.zoom.us`
+- `ngrok.io`
 
-### Zoom App Secrets
+### Config: Information
 
-Fill out the [.env](.env) file with your **Client ID**, **Client Secret** and **Redirect URI** from your Zoom App. No
-other fields need to be updated for development and many will be generated in the next section.
+The following information is required to activate your application:
 
-```dotenv
-ZM_CLIENT_ID=...
-ZM_CLIENT_SECRET=...
-ZM_REDIRECT_URL=...
+- Basic Information
+    - App name
+    - Short description
+    - Long description (entering a short message here is fine for now)
+- Developer Contact Information
+    - Name
+    - Email address
+
+> NOTE: if you intend to publish your application on the Zoom Apps Marketplace, more information will be required in this section before submitting.
+
+### Config: App Features
+
+Under the Zoom App SDK section, click the `+ Add APIs` button and enable the following options from their respective
+sections:
+
+#### APIs
+
+- shareApp
+
+### Scopes
+
+Select the following OAuth scopes from the Scopes tab:
+
+- `zoomapp:inmeeting`
+
+### Config `.env`
+
+Open the `.env` file in your text editor and enter the following information from the App Credentials section you just
+configured:
+
+```ini
+# Client ID for your Zoom App
+ZM_CLIENT_ID=[app_client_id]
+
+# Client Secret for your Zoom app
+ZM_CLIENT_SECRET=[app_client_id]
+
+# Redirect URI set for your app in the Zoom Marketplace
+ZM_REDIRECT_URL=https://[xxxx-xx-xx-xxx-x].ngrok.io/auth
 ```
 
 #### Zoom for Government
 
-If you are a [ZfG](https://www.zoomgov.com/) customer you can set the `ZM_HOST` environment variable to change the base
-URL used for Zoom. This will allow you to adjust to the different Marketplace and API Base URLs used by ZfG customers.
+If you are a [Zoom for Government (ZfG)](https://www.zoomgov.com/) customer you can use the `ZM_HOST` variable to change
+the base URL used for Zoom. This will allow you to adjust to the different Marketplace and API Base URLs used by ZfG
+customers.
 
 **Marketplace URL:** marketplace.*zoomgov.com*
 
@@ -99,55 +122,46 @@ URL used for Zoom. This will allow you to adjust to the different Marketplace an
 
 ## Start the App
 
-To test out the app, start in development mode
-
 ### Development
 
-Start the server in development mode and watch for changes
+Run the `dev` npm script to start in development mode using a Docker container.
 
 ```shell
-$ npm run dev
+npm run dev
 ```
 
 The `dev` script will:
 
-2. Watch for changes to the js files in the public/ folder
-3. Watch for changes to the server
-4. Start the application
+1. Watch Vue.js files and built to the dist/ folder
+1. Watch Server files and build to the dist/ folder
+1. Start the application
 
 ### Production
 
 When running your application in production no logs are sent to the console by default and the server is not restarted
 on file changes.
 
-We use the `NODE_ENV` environment variable here to tell the application to start in production mode.
-
-****
+We use the `NODE_ENV` environment variable here to tell the application to start in prodcution mode.
 
 ```shell
-$ NODE_ENV=production npm start
+# Mac/Linux
+NODE_ENV=production npm start
+
+# Windows
+set NODE_ENV=production && npm start
 ````
 
 ## Usage
 
-Install the Zoom App for your user:
+To install the Zoom App, Navigate to the **Home Page URL** that you set in your browser and click the link to install.
 
-1. Navigate to your application on the [Zoom Marketplace](https://marketplace.zoom.us) and Click **Install**
-2. or open your Zoom App in a browser ([http://localhost:3000](http://localhost:3000) by default) and click the '
-   install' link
-
-## Deployment
-
-You can deploy this server on any service that allows you to host dynamic Node.js apps. You'll first want to make sure
-that you've configured a MongoDB server to connect to.
-
-1. [Heroku](https://devcenter.heroku.com/articles/deploying-nodejs)
-2. [Google Cloud](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/nodejs)
-3. [AWS](https://aws.amazon.com/getting-started/hands-on/deploy-nodejs-web-app/)
+After you authorize the app, Zoom will automatically open the app within the client.
 
 ## Contribution
 
-We do not accept pull requests at this time.
+Please send pull requests and issues to this project for any problems or suggestions that you have!
+
+Make sure that you install packages locally to pass pre-commit git hooks.
 
 ### Keeping secrets secret
 
@@ -163,8 +177,9 @@ re using instead of within the .env file. This might include using a secret mana
 
 ### Code Style
 
-This project uses prettier and eslint to enforce style and protect against coding errors along with a pre-commit git
-hook ([husky](https://typicode.github.io/husky/#/)) to ensure files pass checks prior to commit.
+This project uses [prettier](https://prettier.io/) and [eslint](https://eslint.org/) to enforce style and protect
+against coding errors along with a pre-commit git hook(s) via [husky](https://typicode.github.io/husky/#/) to ensure
+files pass checks prior to commit.
 
 ### Testing
 
