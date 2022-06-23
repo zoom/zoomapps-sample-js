@@ -104,7 +104,7 @@ configured:
 ZM_CLIENT_ID=[app_client_id]
 
 # Client Secret for your Zoom app
-ZM_CLIENT_SECRET=[app_client_id]
+ZM_CLIENT_SECRET=[app_client_secret]
 
 # Redirect URI set for your app in the Zoom Marketplace
 ZM_REDIRECT_URL=https://[xxxx-xx-xx-xxx-x].ngrok.io/auth
