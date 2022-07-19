@@ -13,6 +13,7 @@
     "postprepare": "node scripts/gen-secrets.cjs"
   },
   "dependencies": {
+    "@zoom/appssdk": "^0.16.2",
     "axios": "^0.26.0",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.6",

@@ -1,4 +1,4 @@
-/* global zoomSdk */
+import zoomSdk from '@zoom/appssdk';
 
 (async () => {
     try {
