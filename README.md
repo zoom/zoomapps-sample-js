@@ -41,8 +41,8 @@ Click the "Build App" button at the top and choose to "Zoom Apps" application.
 2. Choose whether to list your app on the marketplace or not
 3. Click "Create"
 
-For more information, you can follow [this guide](https://marketplace.zoom.us/docs/beta-docs/zoom-apps/createazoomapp)
-check out  [this video series]() on how to create and configure these sample Zoom Apps.
+For more information, you can follow [this guide](https://dev.to/zoom/introducing-zoom-apps-33he)
+check out [this video series](https://www.youtube.com/playlist?list=PLKpRxBfeD1kGN-0QgQ6XtSwtxI3GQM16R) on how to create and configure these sample Zoom Apps.
 
 ### Config: App Credentials
 
