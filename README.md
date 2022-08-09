@@ -90,13 +90,12 @@ sections:
 
 ### Scopes
 
-Select the following OAuth scopes from the Scopes tab:
-
+Ensure that the following scope is selected on the Scopes tab:
 - `zoomapp:inmeeting`
 
 ### Config `.env`
 
-Open the `.env` file in your text editor and enter the following information from the App Credentials section you just
+When building for Development, open the `.env` file in your text editor and enter the following information from the App Credentials section you just
 configured:
 
 ```ini
@@ -132,7 +131,7 @@ npm run dev
 
 The `dev` script will:
 
-1. Watch Vue.js files and built to the dist/ folder
+1. Watch JS files and built to the dist/ folder
 1. Watch Server files and build to the dist/ folder
 1. Start the application
 
@@ -153,15 +152,9 @@ set NODE_ENV=production && npm start
 
 ## Usage
 
-To install the Zoom App, Navigate to the **Home Page URL** that you set in your browser and click the link to install.
+To install the Zoom App, Navigate to the **Home URL** that you set in your browser and click the link to install.
 
 After you authorize the app, Zoom will automatically open the app within the client.
-
-## Contribution
-
-Please send pull requests and issues to this project for any problems or suggestions that you have!
-
-Make sure that you install packages locally to pass pre-commit git hooks.
 
 ### Keeping secrets secret
 
@@ -190,3 +183,6 @@ At this time there are no e2e or unit tests.
 If you're looking for help, try [Developer Support](https://devsupport.zoom.us) or
 our [Developer Forum](https://devforum.zoom.us). Priority support is also available
 with [Premier Developer Support](https://zoom.us/docs/en-us/developer-support-plans.html) plans.
+
+### Documentation
+Make sure to review [our documentation](https://marketplace.zoom.us/docs/zoom-apps/introduction/) as a reference when building your Zoom Apps.
