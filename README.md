@@ -18,7 +18,7 @@ Open your terminal:
 
 ```bash
 # Clone down this repository
-git clone git@github.com/zoom/zoomapps-sample-js
+git clone git@github.com:zoom/zoomapps-sample-js.git
 
 # navigate into the cloned project directory
 cd zoomapps-sample-js
