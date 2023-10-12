@@ -27,12 +27,8 @@ router.get('/', async (req, res, next) => {
             return res.status(401).json({ error: 'Invalid or expired context' });
         }
 
-        const isZoom = Boolean(context);
-        const name = isZoom ? 'Zoom' : 'Browser';
-
         return res.render('index', {
-            isZoom,
-            title: `Hello ${name}`,
+            title: `Hello`,
         });
     } catch (e) {
         next(handleError(e));
