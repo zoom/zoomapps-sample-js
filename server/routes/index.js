@@ -22,13 +22,21 @@ router.get('/', async (req, res, next) => {
         const header = req.header(contextHeader);
         const context = header && getAppContext(header);
 
+        if (!context) {
+            return res.render('index', {
+                isZoom: false,
+                title: `Hello Browser`,
+            });
+        }
+
         // Check if the context is valid and not expired
-        if (!context || isContextExpired(context)) {
+        if (isContextExpired(context)) {
             return res.status(401).json({ error: 'Invalid or expired context' });
         }
 
         return res.render('index', {
-            title: `Hello`,
+            isZoom: true,
+            title: `Hello Zoom`,
         });
     } catch (e) {
         next(handleError(e));
