@@ -10,18 +10,33 @@ const router = express.Router();
  * Home Page - Zoom App Launch handler
  * this route is used when a user navigates to the deep link
  */
+function isContextExpired(context) {
+    const currentTime = Date.now();
+    return context.exp && context.exp < currentTime;
+}
+
 router.get('/', async (req, res, next) => {
     try {
         sanitize(req);
 
         const header = req.header(contextHeader);
+        const context = header && getAppContext(header);
 
-        const isZoom = header && getAppContext(header);
-        const name = isZoom ? 'Zoom' : 'Browser';
+        if (!context) {
+            return res.render('index', {
+                isZoom: false,
+                title: `Hello Browser`,
+            });
+        }
+
+        // Check if the context is valid and not expired
+        if (isContextExpired(context)) {
+            return res.status(401).json({ error: 'Invalid or expired context' });
+        }
 
         return res.render('index', {
-            isZoom,
-            title: `Hello ${name}`,
+            isZoom: true,
+            title: `Hello Zoom`,
         });
     } catch (e) {
         next(handleError(e));
