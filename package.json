@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@zoom/appssdk": "^0.16.8",
-    "axios": "^0.26.0",
+    "axios": "^1.6.2",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.6",
     "cookie-session": "^2.0.0",
@@ -43,7 +43,7 @@
     "eslint-config-prettier": "^8.4.0",
     "husky": "^7.0.4",
     "lint-staged": "^12.3.4",
-    "nodemon": "^2.0.15",
+    "nodemon": "^3.0.1",
     "prettier": "^2.5.1",
     "rollup": "^2.70.1",
     "rollup-plugin-copy": "^3.4.0",
