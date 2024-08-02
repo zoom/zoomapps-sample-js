@@ -1,6 +1,6 @@
 {
   "name": "zoomapps-sample-js",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "exports": "./server",
   "private": true,
@@ -19,7 +19,7 @@
     "cookie-parser": "~1.4.6",
     "cookie-session": "^2.0.0",
     "debug": "~4.3.3",
-    "express": "~4.17.3",
+    "express": "~4.19.2",
     "express-validator": "^6.14.0",
     "helmet": "^5.0.2",
     "http-errors": "^2.0.0",
