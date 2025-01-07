@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@zoom/appssdk": "^0.16.22",
-    "axios": "^1.6.2",
+    "axios": "^1.7.9",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.6",
     "cookie-session": "^2.0.0",
