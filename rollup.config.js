@@ -1,7 +1,7 @@
 import { babel } from '@rollup/plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
