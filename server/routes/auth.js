@@ -31,7 +31,7 @@ const validateQuery = [
  * Redirect URI - Zoom App Launch handler
  * The user is redirected to this route when they authorize your app
  */
-router.get('/', session, validateQuery, async (req, res, next) => {
+router.post('/', session, validateQuery, async (req, res, next) => {
     req.session.state = null;
 
     try {
